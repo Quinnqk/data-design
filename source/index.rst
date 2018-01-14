@@ -10,9 +10,9 @@ Welcome to Data and Design's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-0.0_overview.ipynb
-0.1_Pandas_and_Seaborn.ipynb
-0.2_Pandas_Seaborn_WorldBank.ipynb
+	0.0_overview
+	0.1_Pandas_and_Seaborn
+	0.2_Pandas_Seaborn_WorldBank
 
 Indices and tables
 ==================
