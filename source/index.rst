@@ -8,7 +8,7 @@ Welcome to Data and Design's documentation!
 
 .. toctree::
    :glob:
-   :caption: Contents:
+   :caption: Contents
 
 	0.0_overview
 	0.1_Pandas_and_Seaborn
