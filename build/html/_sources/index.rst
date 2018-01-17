@@ -13,4 +13,5 @@ Welcome to Data and Design's documentation!
 	0.0_overview
 	0.1_Pandas_and_Seaborn
 	0.2_Pandas_Seaborn_WorldBank
+    0.3_scraping
 
