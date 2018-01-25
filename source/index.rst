@@ -13,5 +13,5 @@ Welcome to Data and Design's documentation!
 	00-overview
 	01-syllabus
 	02-introPandas
-  03-datafiles
-  04-ProjectA
+  	03-datafiles
+  	04-ProjectA
