@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to Data and Design’s documentation! &mdash; Data and Design version 44345c3</title>
+  <title>Data and Design with Python &mdash; Data and Design version 44345c3</title>
   
 
   
@@ -35,8 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Data and Design version 44345c3" href="#"/>
-        <link rel="next" title="Data Accession" href="03-datafiles.html"/> 
+    <link rel="top" title="Data and Design version 44345c3" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -55,7 +54,7 @@
           
 
           
-            <a href="#">
+            <a href="index.html">
           
 
           
@@ -86,8 +85,7 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="03-datafiles.html">Data Accession</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-ProjectA.html">Additional API Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.3_scraping.html">Web Scraping with Python</a></li>
 </ul>
 
             
@@ -102,7 +100,7 @@
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Data and Design</a>
+          <a href="index.html">Data and Design</a>
         
       </nav>
 
@@ -130,15 +128,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Welcome to Data and Design’s documentation!</li>
+      <li>Data and Design with Python</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.rst" rel="nofollow"> View page source</a>
+            <a href="_sources/00-overview.ipynb" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -185,25 +183,59 @@
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="welcome-to-data-and-design-s-documentation">
-<h1>Welcome to Data and Design’s documentation!<a class="headerlink" href="#welcome-to-data-and-design-s-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="03-datafiles.html">Data Accession</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="03-datafiles.html#.csv-files"><code class="docutils literal"><span class="pre">.csv</span></code> files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03-datafiles.html#Reading-.csv-files-from-web">Reading <code class="docutils literal"><span class="pre">.csv</span></code> files from web</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03-datafiles.html#Problems">Problems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03-datafiles.html#Accessing-data-through-API">Accessing data through API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03-datafiles.html#StatsModels">StatsModels</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03-datafiles.html#Problems">Problems</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="04-ProjectA.html">Additional API Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="04-ProjectA.html#NYC-Open-Data">NYC Open Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="04-ProjectA.html#Climate-Data">Climate Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="04-ProjectA.html#Using-the-Documentation">Using the Documentation</a></li>
-</ul>
-</li>
+<div class="section" id="Data-and-Design-with-Python">
+<h1>Data and Design with Python<a class="headerlink" href="#Data-and-Design-with-Python" title="Permalink to this headline">¶</a></h1>
+<p><strong>OVERVIEW</strong></p>
+<p>This short course aims to introduce participants to the Python computing
+language. We will investigate the use of Python to perform data
+analysis, access and structure information from the web, and build and
+deploy applications like web pages and message boards using Django.
+Students will be expected to complete a small project for each weeks
+topics described below.</p>
+<div class="section" id="Topics">
+<h2>Topics<a class="headerlink" href="#Topics" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>Introduction to Data and Visualizations</strong>: The first class will
+focus on using Pandas and Seaborn to explore data in <code class="docutils literal"><span class="pre">.csv</span></code> files
+and through API’s. We emphasize the use of the computer to explore
+the data and look for patterns and differences. Our first project
+involves writing an analysis of New York City’s <span class="math">\(8^{\text{th}}\)</span>
+grade mathematics scores.</li>
+<li><a class="reference internal" href="02-introPandas.html"><span class="doc">Introduction to Pandas and Seaborn</span></a></li>
+<li><a class="reference external" href="03-pandasapi.ipynb">Pandas and Seaborn</a></li>
+<li><a class="reference external" href="04-mathscores.ipynb">Assignment: Assessing Mathematics Scores</a></li>
+<li><strong>Introduction to Web Scraping and NLP</strong>: Today, we investigate the
+use of webscraping to pull and clean data from websites. In addition
+to quantitative data, we begin to explore how to analyze textual data
+using the NLTK library. Our second project involves scraping and
+analyzing the language used by two different news organizations
+reporting on the same topic.</li>
+<li>Introduction to webscraping</li>
+<li>Scraping Text and NLTK</li>
+<li>Assignment: Who’s News?</li>
+<li><strong>Web Crawling and Machine Learning</strong>: This session will advance our
+web scraping with the use of <code class="docutils literal"><span class="pre">scrapy</span></code> to crawl multiple webpages.
+From here, we will investigate contemporary data analysis paradigms
+through machine learning with NLP. Our project involves crawling
+sites of interest and deploying ML approaches in language processing.</li>
+<li>Webcrawling with Scrapy</li>
+<li>Machine Learning on Text</li>
+<li>Assignment: Crawling Twitter</li>
+<li><strong>Web Design with Django</strong>: In this workshop, we will use the Django
+framework to design and deploy a basic web application. Our
+assignment involves customizing and extending our base blog
+framework.</li>
+<li>Basic WebSite with Django</li>
+<li>Applications with Django</li>
+<li>Assignment: Blog with Django</li>
+<li><strong>Bots and Python</strong>: This workshop will focus on the use of Python to
+build and deploy a simple bot. Famous from the recent election cycle,
+we focus on how to automate communication with individuals on the
+web. Our assignment involves the development and deployment of our
+own bot.</li>
+<li>Bot Basics</li>
+<li>Deploying a Bot</li>
+<li>Assignment: Make your Bot</li>
 </ul>
 </div>
 </div>
@@ -215,13 +247,6 @@
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="03-datafiles.html" class="btn btn-neutral float-right" title="Data Accession" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-    </div>
   
 
   <hr/>

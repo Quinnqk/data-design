@@ -10,8 +10,8 @@ Welcome to Data and Design's documentation!
 	:glob:
 	:caption: Section I
 
-	0.0_overview
-	0.1_Pandas_and_Seaborn
-	0.2_Pandas_Seaborn_WorldBank
-    0.3_scraping
-
+	00-overview
+	01-syllabus
+	02-introPandas
+  03-datafiles
+  04-ProjectA
