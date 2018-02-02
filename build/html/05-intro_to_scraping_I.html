@@ -1,0 +1,857 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Introduction to Web Scraping &mdash; Data and Design version c3c665e</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Data and Design version c3c665e" href="index.html"/>
+        <link rel="next" title="Web Scraping with Python" href="06_scraping_II.html"/>
+        <link rel="prev" title="Welcome to Data and Design’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/logo.svg" class="logo" />
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Web Scraping</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#What-is-a-website">What is a website</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#HTML-Tags">HTML Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Getting-the-HTML-with-Requests">Getting the HTML with Requests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Parsing-HTML-with-Beautiful-Soup">Parsing HTML with Beautiful Soup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Creating-a-Table-of-Facts">Creating a Table of Facts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Pandas-and-DataFrames">Pandas and DataFrames</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Save-our-Data">Save our Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="06_scraping_II.html">Web Scraping with Python</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Data and Design</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Introduction to Web Scraping</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/05-intro_to_scraping_I.ipynb" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="Introduction-to-Web-Scraping">
+<h1>Introduction to Web Scraping<a class="headerlink" href="#Introduction-to-Web-Scraping" title="Permalink to this headline">¶</a></h1>
+<p><strong>GOALS</strong>:</p>
+<ul class="simple">
+<li>Introduce structure of webpage</li>
+<li>Use requests to get website data</li>
+<li>Use Beautiful Soup to parse basic HTML page</li>
+</ul>
+<div class="section" id="What-is-a-website">
+<h2>What is a website<a class="headerlink" href="#What-is-a-website" title="Permalink to this headline">¶</a></h2>
+<p>Behind every website is HTML code. This HTML code is accessible to you
+on the internet. If we navigate to a website that contains 50
+interesting facts about Kanye West
+(<a class="reference external" href="http://www.boomsbeat.com/articles/2192/20140403/50-interesting-facts-about-kanye-west-had-a-near-death-experience-in-2002-his-stylist-went-to-yale.htm">http://www.boomsbeat.com/articles/2192/20140403/50-interesting-facts-about-kanye-west-had-a-near-death-experience-in-2002-his-stylist-went-to-yale.htm</a>),
+we can view the HTML behind it using the source code.</p>
+<p>I’m using a macintosh computer and browsing with chrome. To get the
+source code I hit <code class="docutils literal"><span class="pre">control</span></code> and click on the page to see the page
+source option. Other browsers are similar. The result will be a new tab
+containing HTML code. Both are shown below.</p>
+</div>
+<div class="section" id="HTML-Tags">
+<h2>HTML Tags<a class="headerlink" href="#HTML-Tags" title="Permalink to this headline">¶</a></h2>
+<p>Tags are used to identify different objects on a website, and every tag
+has the same structure. For example, to write a paragraph on a webpage
+we would use the paragraph tags and put our text between the tags, as
+shown below.</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>
+This is where my text would go.
+<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Here, the <code class="docutils literal"><span class="pre">&lt;p&gt;</span></code> starts the paragraph and the <code class="docutils literal"><span class="pre">&lt;/p&gt;</span></code> ends the
+paragraph. Tags can be embedded within other tags. If we wanted to make
+a word bold and insert an image within the paragraph, we could write the
+following HTML code.</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span>&lt;p&gt;
+This is a &lt;strong&gt;heavy&lt;/strong&gt; paragraph.  Here&#39;s a heavy picture.
+&lt;img src=&quot;images/heavy_pic.jpg&quot;/img&gt;
+&lt;/p&gt;
+</pre></div>
+</div>
+<p>Also, tags may be given attributes. This may be used to apply a style
+using CSS. For example, the first fact about Kanye uses the <code class="docutils literal"><span class="pre">dir</span></code>
+attribute, and it was named <code class="docutils literal"><span class="pre">ltr</span></code>. This differentiates it from the
+opening paragraph that uses no attribute.</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;caption&quot;</span><span class="p">&gt;</span>Source: Flickr<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Kanye West is a Grammy-winning rapper who is currently engaged to Kim Kardashian and he is well known for his outrageous statements and for his broad musical palette.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">ol</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">li</span> <span class="na">dir</span><span class="o">=</span><span class="s">&quot;ltr&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span> <span class="na">dir</span><span class="o">=</span><span class="s">&quot;ltr&quot;</span><span class="p">&gt;</span>Kanye Omari West was born June 8, 1977 in Atlanta.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>We can use Python to pull the HTML of a webpage into a Jupyter notebook,
+and then use libraries with functions that know how to read HTML. We
+will use the attributes to further fine tune parsing the pieces of
+interest on the webpage.</p>
+</div>
+<div class="section" id="Getting-the-HTML-with-Requests">
+<h2>Getting the HTML with Requests<a class="headerlink" href="#Getting-the-HTML-with-Requests" title="Permalink to this headline">¶</a></h2>
+<p>The requests library can be used to fetch the HTML content of our
+website. We will assign the content of the webpage to a variable k. We
+can peek at this after, printing the first 400 characters of the
+request.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://www.boomsbeat.com/articles/2192/20140403/50-interesting-facts-about-kanye-west-had-a-near-death-experience-in-2002-his-stylist-went-to-yale.htm&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">400</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&#34;utf-8&#34;&gt;
+&lt;title&gt;50 interesting facts about Kanye West: Had a near death-experience in 2002, his stylist went to Yale : People : BOOMSbeat&lt;/title&gt;
+&lt;meta content=&#34;width=device-width&#34; name=&#34;viewport&#34;&gt;
+
+&lt;meta name=&#34;Keywords&#34; content=&#34;Kanye West, Kanye West facts, Kanye West net worth, Kanye West full name&#34; /&gt;
+&lt;meta name=&#34;Description&#34; content=&#34;Kanye West is a
+</pre></div></div>
+</div>
+<p>As we wanted, we have all the HTML content that we saw in our source
+view.</p>
+<div class="section" id="Parsing-HTML-with-Beautiful-Soup">
+<h3>Parsing HTML with Beautiful Soup<a class="headerlink" href="#Parsing-HTML-with-Beautiful-Soup" title="Permalink to this headline">¶</a></h3>
+<p>Now, we will use the Beautiful Soup library to parse the HTML. Beautiful
+soup knows how to read the HTML and has many functions we can use to
+pull specific pieces of interest out. To begin, we turn our request
+object into a beautiful soup object named <code class="docutils literal"><span class="pre">soup</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+<span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Now, let us take a look at the source again and locate the structure
+surrounding the interesting facts. By searching on the source page for
+the first fact, I find the following.</p>
+<div class="figure">
+<img alt="" src="_images/kanye_sourced.png" />
+</div>
+<p>Here, it’s important to notice that the facts lie inside <code class="docutils literal"><span class="pre">&lt;p&gt;</span></code>
+paragraph tags. These tags also have an attribute <code class="docutils literal"><span class="pre">dir</span> <span class="pre">=</span> <span class="pre">&quot;ltr&quot;</span></code>. We
+can use beautiful soup to locate all these instances. If we are correct,
+we should have 50 interesting facts.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">facts</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;dir&#39;</span><span class="p">:</span><span class="s1">&#39;ltr&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">facts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>50
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">facts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[9]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;p dir=&quot;ltr&quot;&gt;Kanye Omari West was born June 8, 1977 in Atlanta.&lt;/p&gt;
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">facts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[10]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;Kanye Omari West was born June 8, 1977 in Atlanta.&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Creating-a-Table-of-Facts">
+<h3>Creating a Table of Facts<a class="headerlink" href="#Creating-a-Table-of-Facts" title="Permalink to this headline">¶</a></h3>
+<p>Now, we can create a table that contains each interesting fact. To do
+so, we will start with an empty list and append each interesting fact
+using our above syntax and a for loop.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">table</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">facts</span><span class="p">:</span>
+    <span class="n">fact</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">text</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fact</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[14]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>50
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">table</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[20]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;Kanye Omari West was born June 8, 1977 in Atlanta.&#39;,
+ &#39;His father Ray West was a black panther in the 60s and 70s and he later became one of the first black photojournalists at the Atlanta-Journal Constitution and later became a Christian counselor. His mother Donda was English professor at Clark Atlanta University. He later moved to Chicago at the age of three when his parents divorced.&#39;,
+ &#39;The name Kanye means &quot;the only one&quot; in Swahilli.&#39;,
+ &#39;Kanye lived in China for more than a year with his mother when he was in fifth grade. His mother was a visiting professor there at the time and he joined her.&#39;,
+ &#39;Kanye attended Chicago State University/Columbia College in Chicago.  He dropped out to pursue music which is why he named his 2004 debut album, &quot;The College Dropout.&quot;&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Pandas-and-DataFrames">
+<h3>Pandas and DataFrames<a class="headerlink" href="#Pandas-and-DataFrames" title="Permalink to this headline">¶</a></h3>
+<p>The standard library for data analysis in Python is Pandas. Here, the
+typical row and column format for data used is called a DataFrame. We
+can convert our table data to a dataframe as follows.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Interesting Facts&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<p>We can use the <code class="docutils literal"><span class="pre">head()</span></code> function to examine the top 5 rows of our new
+DataFrame.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Interesting Facts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Kanye Omari West was born June 8, 1977 in Atla...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>His father Ray West was a black panther in the...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>The name Kanye means "the only one" in Swahilli.</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Kanye lived in China for more than a year with...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Kanye attended Chicago State University/Columb...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="section" id="Save-our-Data">
+<h4>Save our Data<a class="headerlink" href="#Save-our-Data" title="Permalink to this headline">¶</a></h4>
+<p>Now, we can convert the dataframe to a comma separated value file on our
+computer. We could read this back in at any time as shown with the
+<code class="docutils literal"><span class="pre">read_csv</span></code> file.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;kanye_facts.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">enconding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;kanye_facts.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Interesting Facts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Kanye Omari West was born June 8, 1977 in Atla...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>His father Ray West was a black panther in the...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>The name Kanye means "the only one" in Swahilli.</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Kanye lived in China for more than a year with...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Kanye attended Chicago State University/Columb...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Kanye's struggle to transition from producer t...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>At the start of his music career, Kanye appare...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="06_scraping_II.html" class="btn btn-neutral float-right" title="Web Scraping with Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to Data and Design’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Jacob Frias Koehler.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'c3c665e',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: ''
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

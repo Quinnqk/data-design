@@ -15,3 +15,5 @@ Welcome to Data and Design's documentation!
 	02-introPandas
   	03-datafiles
   	04-ProjectA
+    05-intro_to_scraping_I
+    06_scraping_II
