@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Introduction to Web Scraping &mdash; Data and Design version c3c665e</title>
+  <title>Introduction to Web Scraping &mdash; Data and Design version 32ed99b</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Data and Design version c3c665e" href="index.html"/>
+    <link rel="top" title="Data and Design version 32ed99b" href="index.html"/>
         <link rel="next" title="Web Scraping with Python" href="06_scraping_II.html"/>
-        <link rel="prev" title="Welcome to Data and Design’s documentation!" href="index.html"/> 
+        <link rel="prev" title="Project A" href="04-ProjectA.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -87,6 +87,8 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="03-datafiles.html">Data Accession</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-ProjectA.html">Project A</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Web Scraping</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#What-is-a-website">What is a website</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#HTML-Tags">HTML Tags</a></li>
@@ -371,6 +373,23 @@ div.nboutput div.output_area.stderr {
 <li>Use requests to get website data</li>
 <li>Use Beautiful Soup to parse basic HTML page</li>
 </ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="o">%%</span><span class="k">HTML</span>
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/dFKwcFJHLhE?ecver=1&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen&gt;&lt;/iframe&gt;
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dFKwcFJHLhE?ecver=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+</div>
 <div class="section" id="What-is-a-website">
 <h2>What is a website<a class="headerlink" href="#What-is-a-website" title="Permalink to this headline">¶</a></h2>
 <p>Behind every website is HTML code. This HTML code is accessible to you
@@ -429,7 +448,7 @@ can peek at this after, printing the first 400 characters of the
 request.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -440,7 +459,7 @@ request.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -474,7 +493,7 @@ pull specific pieces of interest out. To begin, we turn our request
 object into a beautiful soup object named <code class="docutils literal"><span class="pre">soup</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -495,17 +514,17 @@ can use beautiful soup to locate all these instances. If we are correct,
 we should have 50 interesting facts.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">facts</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;dir&#39;</span><span class="p">:</span><span class="s1">&#39;ltr&#39;</span><span class="p">})</span>
+<span></span><span class="n">facts</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -515,17 +534,17 @@ we should have 50 interesting facts.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[8]:
+<span></span>Out[5]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>50
+<span></span>89
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -535,17 +554,17 @@ we should have 50 interesting facts.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[9]:
+<span></span>Out[6]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;p dir=&quot;ltr&quot;&gt;Kanye Omari West was born June 8, 1977 in Atlanta.&lt;/p&gt;
+<span></span>&lt;p class=&quot;art-date&quot;&gt;Apr 03, 2014 11:57 AM EDT&lt;/p&gt;
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -555,11 +574,111 @@ we should have 50 interesting facts.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
+<span></span>Out[7]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&#39;Kanye Omari West was born June 8, 1977 in Atlanta.&#39;
+<span></span>&#39;Apr 03, 2014 11:57 AM EDT&#39;
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">facts</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">53</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&lt;p&gt;Kanye West is a Grammy-winning rapper who is currently engaged to Kim Kardashian and he is well known for his outrageous statements and for his broad musical palette.&lt;/p&gt;,
+ &lt;p&gt;Kanye Omari West was born June 8, 1977 in Atlanta.&lt;/p&gt;,
+ &lt;p&gt;His father Ray West was a black panther in the 60s and 70s and he later became one of the first black photojournalists at the Atlanta-Journal Constitution and later became a Christian counselor. His mother Donda was English professor at Clark Atlanta University. He later moved to Chicago at the age of three when his parents divorced.&lt;/p&gt;,
+ &lt;p&gt;The name Kanye means &quot;the only one&quot; in Swahilli.&lt;/p&gt;,
+ &lt;p&gt;Kanye lived in China for more than a year with his mother when he was in fifth grade. His mother was a visiting professor there at the time and he joined her.&lt;/p&gt;,
+ &lt;p&gt;Kanye attended Chicago State University/Columbia College in Chicago.  He dropped out to pursue music which is why he named his 2004 debut album, &quot;The College Dropout.&quot;&lt;/p&gt;,
+ &lt;p&gt;Kanye&#39;s struggle to transition from producer to MC is well documented throughout his music. However, &#39;Ye didn&#39;t keep to quiet about his desire to become a full-fledged rapper. Def Jam A&amp;amp;R Chris Anokute recalled that Yeezy would often play his demo for him in his cubicle when he would stop by Def Jam&#39;s offices to pick up his production checks.&lt;/p&gt;,
+ &lt;p&gt;At the start of his music career, Kanye apparently kept his business dealings all in the family. West&#39;s late mother Donda-a professor of English at Clark Atlanta University and later Chicago State University-retired from teaching to become her son&#39;s manager for the early part of his career.&lt;/p&gt;,
+ &lt;p&gt;He sold his first beat to local Chicago rapper Gravity for $8,800.&lt;/p&gt;,
+ &lt;p&gt;He got his first big break through No I.D. (born Dion Ernest Wilson) is a veteran hip hop producer and current VP at Def Jam. He taught Kanye how to produce beats and gave him his start in the music business-all because their moms forced the two to hang out.&lt;/p&gt;,
+ &lt;p&gt;No I.D.&#39;s mother convinced him to meet this &quot;energetic&quot; kid, and the lessons paid off: &quot;At first it was just like, &#39;Alright man take this, learn this, go, git git git.&#39; But eventually he started getting good and then I started managing him.&quot; West&#39;s subsequent success only bolstered No I.D.&#39;s reputation outside of Chicago-a powerful lesson in why you should probably listen to your mother.&lt;/p&gt;,
+ &lt;p&gt;He initially rose to fame as a producer for Roc-A-Fella Records. He is was influential on Jay-Z&#39;s 2001 album, &#39;The Blueprint&#39;, producing 5 of the 13 tracks and two bonus tracks, more than any of the other producers on the album.&lt;/p&gt;,
+ &lt;p&gt;He dropped out of college and had a slew of random jobs. He worked as a telemarketer and sold insurance to Montgomery Ward credit card holders. &quot;I was way better than most of the people there,&quot; he told Playboy. &quot;I could sit around and draw pictures, basically do other [things] while I was reading the teleprompter.&quot;&lt;/p&gt;,
+ &lt;p&gt;Kanye was in a near fatal car accident while he was driving home from the studio in October 2002. The injuries were bad and he had to have a metal plate put into his chin.&lt;/p&gt;,
+ &lt;p&gt;While he was recovering in hospital, he didn&#39;t want to stop recording music so he asked for an electronic drum machine which he used to continue composing new music.&lt;/p&gt;,
+ &lt;p&gt;He admits that the idea of becoming a male porn star crossed his mind once or twice before.&lt;/p&gt;,
+ &lt;p&gt;His single debut is &quot;Through the Wire&quot; because he recorded it while he was still wearing the metal brace in his mouth.&lt;/p&gt;,
+ &lt;p&gt;Chaka Khan initially refused to grant Kanye permission to use the pitched-up sample of her vocals from &quot;Through the Fire&quot; on College Dropout. But according to the video&#39;s co-director Coodie Simmons who told &lt;a href=&quot;http://espn.go.com/blog/music/post/_/id/4151/coodie-breaks-down-his-music-videos&quot; rel=&quot;nofollow&quot;&gt;ESPN.com&lt;/a&gt; , a Sunday barbecue at Coodie&#39;s house changed hip-hop history. &quot;Kanye brought Chaka Khan&#39;s son and I was like, &#39;We&#39;ve got to shoot this video,&#39; so we showed him the &quot;Through The Wire&quot; video. He was like, &#39;Aw man, I&#39;ve got to show my mom this and tell her we&#39;re trying to get this done.&#39; And I would say about two weeks later, she cleared the sample.&quot;&lt;/p&gt;,
+ &lt;p&gt;&lt;iframe class=&quot;videocontent&quot; height=&quot;480&quot; src=&quot;http://www.youtube.com/embed/uvb-1wjAtk4&quot; width=&quot;853&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;,
+ &lt;p&gt;He is a huge fan of Fiona Apple and her music. Yeezy told Apple she was &quot;possibly [his] favorite&quot; and that the lyrics and singing on her debut Tidal made him want to work with producer Jon Brion &quot;so I could be like the rap version of you.&quot; West went so far as to say &quot;I hold you higher than Lauryn Hill in my eyes.&quot;&lt;/p&gt;,
+ &lt;p&gt;&#39;College Dropout&#39; was album of the year by almost every publication (New York Times, Time Magazine, GQ, Spin, XXL, Rolling Stone). NME voted Franz Ferdinand&#39;s debut number one and Kanye&#39;s album number seven.&lt;/p&gt;,
+ &lt;p&gt;West was the most nominated artist at the 47th Annual Grammy Awards with 10 nods, and he took home three trophies - Best Rap Album, Best Rap Song for &quot;Jesus Walks&quot; and Best R&amp;amp;B Song for producing Alicia Keys&#39; &quot;You Don&#39;t Know My Name.&quot;&lt;/p&gt;,
+ &lt;p&gt;Following the success of his The College Dropout album, he treated himself by purchasing an 18th century aquarium with about 30 koi fish in it.&lt;/p&gt;,
+ &lt;p&gt;With the headline &quot;Hip-Hop&#39;s Class Act,&quot; West becomes one of the rare entertainers to appear on the cover of Time. The lengthy article details the contradictions of The College Dropout and of West himself, who admits that when starting out in hip-hop, &quot;It was a strike against me that I didn&#39;t wear baggy jeans and jerseys and that I never hustled, never sold drugs.&quot;&lt;/p&gt;,
+ &lt;p&gt;He used the money from the &quot;Diamonds from Sierra Leone&quot; music video to raise awareness about blood diamonds and the abuse of human rights that happen in the mining process.&lt;/p&gt;,
+ &lt;p&gt;He caused controversy when he strayed  from his scripted monologue at the live televised Concert for Hurricane Relief when he said &quot;George Bush doesn&#39;t care about black people.&quot;  With a shocked looking Mike Myers at his side, West&#39;s comments air live on NBC on the East Coast but are edited out of the West Coast version later that night. &quot;People have lost their lives, lost their families,&quot; he says a week later on The Ellen DeGeneres Show. &quot;It&#39;s the least I could do to go up there and say something from my heart.&quot;&lt;/p&gt;,
+ &lt;p&gt;&lt;iframe class=&quot;videocontent&quot; height=&quot;480&quot; src=&quot;http://www.youtube.com/embed/zIUzLpO1kxI&quot; width=&quot;853&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;,
+ &lt;p&gt;His nicknames include Ye, The Louis Vuitton Don, Yeezy or konman.&lt;/p&gt;,
+ &lt;p&gt;Even after being named Best Hip-Hop Artist at the MTV Europe Music Awards in Copenhagen, a fuming West storms on stage as the award for Best Video is being given to Parisian duo Justice vs. Simian. In a profanity-laced tirade, West says he should have won the prize for &quot;Touch the Sky,&quot; because his video &quot;cost a million dollars, Pamela Anderson was in it.&quot;&lt;/p&gt;,
+ &lt;p&gt;&lt;iframe class=&quot;videocontent&quot; height=&quot;480&quot; src=&quot;http://www.youtube.com/embed/YkwQbuAGLj4&quot; width=&quot;853&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;,
+ &lt;p&gt;Kanye was named International Man of the Year by GQ in 2007 at a ceremony at Covent Garden&#39;s Opera House in London.&lt;/p&gt;,
+ &lt;p&gt;Unfortunately, his mother died that same year following complications while getting plastic surgery.&lt;/p&gt;,
+ &lt;p&gt;Kanye says he realizes, &quot;Nothing is promised in life except for death.&quot; and he lives everyday with that in mind.&lt;/p&gt;,
+ &lt;p&gt;Kanye broke down at a concert in Paris, a week after the passing of his mother, Dr. Donda West, as he tried to sing the verses of &quot;Hey Mama,&quot; a song he had written earlier on in his career in dedication to her.&lt;/p&gt;,
+ &lt;p&gt;&lt;iframe class=&quot;videocontent&quot; height=&quot;480&quot; src=&quot;http://www.youtube.com/embed/2ZXlnJ5o63g&quot; width=&quot;853&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;,
+ &lt;p&gt;He launched an online travel company called &quot;Kanye Travel Ventures&quot; (KTV) through his official website in 2008.&lt;/p&gt;,
+ &lt;p&gt;After the infamous  Taylor Swift Gate VMAs incident in 2009, he decided to leave the country for a while. He went to Japan, then Rome, before finally moving to Hawaii for 6 months to start working on music again.&lt;/p&gt;,
+ &lt;p&gt;&lt;iframe class=&quot;videocontent&quot; height=&quot;480&quot; src=&quot;http://www.youtube.com/embed/UhL2LoYaZ90&quot; width=&quot;853&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;,
+ &lt;p&gt;In addition to avoiding the VMAs backlash, &#39;Ye was able to slow down and spend time reflecting. &quot;It was the first time I got to stop, since my mom had passed, because I never stopped and never tried to even soak in what all had happened,&quot; he later told Ellen Degeneres. Plus he got to do fun stuff like intern at Fendi.&lt;/p&gt;,
+ &lt;p&gt;The Eternal Sunshine of the Spotless Mind director visited the studio on the same the day West was recording &quot;Diamonds From Sierra Leone,&quot; producer Jon Brion &lt;a href=&quot;http://www.mtv.com/news/articles/1507538/kanyes-co-pilot-talks-late-registration.jhtml&quot; rel=&quot;nofollow&quot;&gt;told MTV&lt;/a&gt; . In addition to playing drums on the Grammy-winning song, Gondry&#39;s more famous Late Registration contribution is the video for &quot;Heard &#39;Em Say&quot; featuring Adam Levine.&lt;/p&gt;,
+ &lt;p&gt;He said once in an interview that he prefers finalizing a song in post production more than having sex.&lt;/p&gt;,
+ &lt;p&gt;One of his favorite bands is  Scottish rock group Franz Ferdinand.&lt;/p&gt;,
+ &lt;p&gt;The song, &#39;Stronger&#39;, famously used a sample of Daft Punk&#39;s &#39;Harder, Better, Faster, Stronger&#39;. But Kanye has also created some unreleased songs that contain samples from Broadway hit music, &#39;Wicked&#39;.&lt;/p&gt;,
+ &lt;p&gt;Kanye was engaged to designer Alexis  Phifer for 18 months before he began a relationship Amber Rose. The couple makes a fashionable pair, wearing attention-grabbing ensembles around the world. &quot;He&#39;ll pick out something and he&#39;ll be like &#39;Babe, just ... no.,&#39;&quot;&lt;/p&gt;,
+ &lt;p&gt;For Kanye, being famous has always been an unbearable drain. In his new track &#39;New Slaves&#39;, he compares being a celebrity to, erm, being a slave. Ironically, he is currently engaged to reality TV star Kim Kardashian who is known for loving the media.&lt;/p&gt;,
+ &lt;p&gt;At one point in his career-circa the release of Graduation in 2007-Kanye was slated to star in a TV series. Back by producers Rick Rubin and Larry Charles, the show was set to be a half-hour scripted sitcom based West&#39;s life and music career. Despite numerous mentions of the show to the press, it ultimately never made it to TV.&lt;/p&gt;,
+ &lt;p&gt;He is a sensitive person at heart. An episode of South Park depicting Kanye as an egomaniac is said to have &quot;hurt [his] feelings&quot;.&lt;/p&gt;,
+ &lt;p&gt;Kanye and Royce have a long-standing feud stemming from a 2003 song that West produced for the Detroit rhymer titled &quot;Heartbeat.&quot; West alleges that Nickel Nine never paid for the beat, but recorded to it and released it on Build And Destroy: The Lost Sessions regardless. He has since stated that he will never work with Royce again.&lt;/p&gt;,
+ &lt;p&gt;Although &#39;Ye has a penchant for left field collaborations-most notably Chris Martin of Coldplay, Daft Punk, Bon Iver and Katy Perry-one of his most unexpected collabs came with rock group 30 Seconds To Mars.&lt;/p&gt;,
+ &lt;p&gt;He is a budding fashion designer and he and he collaborated with French brand A.P.C. He garnered attention for selling a plain white t-shirt for $120. &lt;img class=&quot;imgNone magnify&quot; id=&quot;36487&quot; src=&quot;//image.boomsbeat.com/data/images/full/36487/white-jpg.png&quot; title=&quot;white shirt&quot; width=&quot;600&quot;/&gt;&lt;/p&gt;,
+ &lt;p&gt;Kanye opened up a burger chain in Chicago called Fatburger in 2008. When he opened it, he said he had plans to open 10 stores. He opened two before running into some financial problems and so he closed them down in 2011.&lt;/p&gt;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">facts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[9]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;Kanye West is a Grammy-winning rapper who is currently engaged to Kim Kardashian and he is well known for his outrageous statements and for his broad musical palette.&#39;
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">facts</span> <span class="o">=</span> <span class="n">facts</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">53</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -571,7 +690,7 @@ so, we will start with an empty list and append each interesting fact
 using our above syntax and a for loop.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -584,7 +703,7 @@ using our above syntax and a for loop.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<span></span>In [12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -594,7 +713,7 @@ using our above syntax and a for loop.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[14]:
+<span></span>Out[12]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -604,7 +723,7 @@ using our above syntax and a for loop.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -614,7 +733,7 @@ using our above syntax and a for loop.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[20]:
+<span></span>Out[13]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -634,7 +753,7 @@ typical row and column format for data used is called a DataFrame. We
 can convert our table data to a dataframe as follows.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [21]:
+<span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -647,7 +766,7 @@ can convert our table data to a dataframe as follows.</p>
 DataFrame.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -657,11 +776,24 @@ DataFrame.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[17]:
+<span></span>Out[15]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -701,17 +833,17 @@ computer. We could read this back in at any time as shown with the
 <code class="docutils literal"><span class="pre">read_csv</span></code> file.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;kanye_facts.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">enconding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span></span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;kanye_facts.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [23]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -721,7 +853,7 @@ computer. We could read this back in at any time as shown with the
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -731,11 +863,24 @@ computer. We could read this back in at any time as shown with the
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[24]:
+<span></span>Out[19]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -794,7 +939,7 @@ computer. We could read this back in at any time as shown with the
         <a href="06_scraping_II.html" class="btn btn-neutral float-right" title="Web Scraping with Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Welcome to Data and Design’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="04-ProjectA.html" class="btn btn-neutral" title="Project A" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -825,7 +970,7 @@ computer. We could read this back in at any time as shown with the
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'c3c665e',
+            VERSION:'32ed99b',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
