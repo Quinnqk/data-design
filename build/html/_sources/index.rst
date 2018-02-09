@@ -13,7 +13,11 @@ Welcome to Data and Design's documentation!
 	00-overview
 	01-syllabus
 	02-introPandas
-  03-datafiles
-  04-ProjectA
-  05-intro_to_scraping_I
-  06_scraping_II
+    03-datafiles
+    04-ProjectA
+    05-intro_to_scraping_I
+    06_scraping_II
+    07-scraping-jumpstreet
+    08_scraping_and_nltk
+    09_ML_Intro
+    010-Decision-Trees
