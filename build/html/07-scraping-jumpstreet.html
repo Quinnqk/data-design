@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Scraping the Street &mdash; Data and Design version d77bfc7</title>
+  <title>Scraping the Street &mdash; Data and Design version 0d4042f</title>
   
 
   
@@ -35,8 +35,8 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Data and Design version d77bfc7" href="index.html"/>
-        <link rel="next" title="Investigating texts from Project Gutenberg" href="08_scraping_and_nltk.html"/>
+    <link rel="top" title="Data and Design version 0d4042f" href="index.html"/>
+        <link rel="next" title="Webscraping and Natural Language Processing" href="08_scraping_and_nltk.html"/>
         <link rel="prev" title="Introduction to Web Scraping" href="05-intro_to_scraping_I.html"/> 
 
   
@@ -92,16 +92,10 @@
 <li class="toctree-l1"><a class="reference internal" href="05-intro_to_scraping_I.html">Introduction to Web Scraping</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Scraping the Street</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Wikipedia-List-of-Guest-Stars">Wikipedia List of Guest Stars</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Problem">Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Using-Attributes">Using Attributes</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="08_scraping_and_nltk.html">Investigating texts from Project Gutenberg</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_scraping_and_nltk.html#Analyzing-the-Text-with-NLTK">Analyzing the Text with NLTK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_scraping_and_nltk.html#Lexical-Richness-of-Text">Lexical Richness of Text</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_scraping_and_nltk.html#Stopwords">Stopwords</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_scraping_and_nltk.html#Lists-Reminders">Lists Reminders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_scraping_and_nltk.html#set-and-tokenizing"><code class="docutils literal"><span class="pre">set</span></code> and tokenizing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_scraping_and_nltk.html#Task">Task</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_scraping_and_nltk.html">Webscraping and Natural Language Processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09_ML_Intro.html">Intro to Machine Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="010-Decision-Trees.html">Decision Tree Classifiers</a></li>
 </ul>
@@ -367,6 +361,26 @@ div.nboutput div.output_area.stderr {
 </style>
 <div class="section" id="Scraping-the-Street">
 <h1>Scraping the Street<a class="headerlink" href="#Scraping-the-Street" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+
+<span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/5GcOXA_41MU&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen&gt;&lt;/iframe&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5GcOXA_41MU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+</div>
 <div class="figure">
 <img alt="" src="_images/21_jump_street.png" />
 </div>
@@ -389,48 +403,100 @@ the information on all the guest stars.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://en.wikipedia.org/wiki/List_of_guest_stars_on_21_Jump_Street&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">page</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span></span><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">page</span>
+<span></span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[6]:
+<span></span>Out[2]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;Response [200]&gt;
+<span></span>1
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">l</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[1, 2, 3]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">l</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[1, 3, 5]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="o">%%</span><span class="k">HTML</span>
+
+&lt;h1&gt;This a header&lt;/h1&gt;
+&lt;p&gt;This is a paragraph&lt;/p&gt;
+&lt;p class = &quot;special&quot;&gt;This is a paragraph with an attribute&lt;/p&gt;
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<h1>This a header</h1>
+<p>This is a paragraph</p>
+<p class = "special">This is a paragraph with an attribute</p></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
 </pre></div>
 </div>
 </div>
@@ -440,7 +506,17 @@ the information on all the guest stars.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+<span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://en.wikipedia.org/wiki/List_of_guest_stars_on_21_Jump_Street&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">page</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -450,7 +526,7 @@ the information on all the guest stars.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">soup</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span>
+<span></span><span class="n">page</span>
 </pre></div>
 </div>
 </div>
@@ -460,27 +536,17 @@ the information on all the guest stars.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&#39;List of guest stars on 21 Jump Street - Wikipedia&#39;
+<span></span>&lt;Response [200]&gt;
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">soup</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">string</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&#39;List of guest stars on 21 Jump Street - Wikipedia&#39;
+<span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -490,7 +556,7 @@ the information on all the guest stars.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">soup</span><span class="o">.</span><span class="n">a</span>
+<span></span><span class="n">soup</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span>
 </pre></div>
 </div>
 </div>
@@ -500,7 +566,7 @@ the information on all the guest stars.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;a id=&quot;top&quot;&gt;&lt;/a&gt;
+<span></span>&#39;List of guest stars on 21 Jump Street - Wikipedia&#39;
 </pre></div>
 </div>
 </div>
@@ -510,7 +576,7 @@ the information on all the guest stars.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">soup</span><span class="o">.</span><span class="n">div</span>
+<span></span><span class="n">soup</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">string</span>
 </pre></div>
 </div>
 </div>
@@ -520,7 +586,7 @@ the information on all the guest stars.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;div class=&quot;noprint&quot; id=&quot;mw-page-base&quot;&gt;&lt;/div&gt;
+<span></span>&#39;List of guest stars on 21 Jump Street - Wikipedia&#39;
 </pre></div>
 </div>
 </div>
@@ -530,13 +596,53 @@ the information on all the guest stars.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span></span><span class="n">soup</span><span class="o">.</span><span class="n">a</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>Out[13]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;a id=&quot;top&quot;&gt;&lt;/a&gt;
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">soup</span><span class="o">.</span><span class="n">div</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[14]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;div class=&quot;noprint&quot; id=&quot;mw-page-base&quot;&gt;&lt;/div&gt;
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[15]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -747,7 +853,7 @@ the information on all the guest stars.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -968,7 +1074,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -978,41 +1084,11 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">all_tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[17]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&#39;\n\nActor\nCharacter\nSeason #\nEpisode #\nEpisode Title\n\n\nBarney Martin\nCharlie\n1\n1\n&quot;Pilot&quot;\n\n\nBrandon Douglas\nKenny Weckerle\n1\n1 &amp; 2\n&quot;Pilot&quot;\n\n\nReginald T. Dorsey\nTyrell &quot;Waxer&quot; Thompson\n1\n1 &amp; 2\n&quot;Pilot&quot;\n\n\nBilly Jayne\nMark Dorian\n1\n2\n&quot;America, What a Town&quot;\n\n\nSteve Antin\nStevie Delano\n1\n2\n&quot;America, What a Town&quot;\n\n\nTraci Lind\nNadia\n1\n2\n&quot;America, What a Town&quot;\n\n\nLeah Ayres\nSusan Chadwick\n1\n3\n&quot;Don\&#39;t Pet the Teacher&quot;\n\n\nGeoffrey Blake\nJeffrey Stone\n1\n3\n&quot;Don\&#39;t Pet the Teacher&quot;\n\n\nJosh Brolin\nTaylor Rolator\n1\n4\n&quot;My Future\&#39;s So Bright, I Gotta Wear Shades&quot;\n\n\nJamie Bozian\nKurt Niles\n1\n4\n&quot;My Future\&#39;s So Bright, I Gotta Wear Shades&quot;\n\n\nJohn D\&#39;Aquino\nVinny Morgan\n1\n4\n&quot;My Future\&#39;s So Bright, I Gotta Wear Shades&quot;\n\n\nTroy Byer\nPatty Blatcher\n1\n5\n&quot;The Worst Night of Your Life&quot;\n\n\nLezlie Deane\nJane Kinney\n1\n5\n&quot;The Worst Night of Your Life&quot;\n\n\nBlair Underwood\nReginald Brooks\n1\n6\n&quot;Gotta Finish the Riff&quot;\n\n\nRobert Picardo\nRalph Buckley\n1\n6\n&quot;Gotta Finish the Riff&quot;\n\n\nScott Schwartz\nJordan Simms\n1\n7\n&quot;Bad Influence&quot;\n\n\nLiane Curtis\nLauren Carlson\n1\n7\n&quot;Bad Influence&quot;\n\n\nByron Thames\nDylan Taylor\n1\n7\n&quot;Bad Influence&quot;\n\n\nSherilyn Fenn\nDiane Nelson\n1\n8\n&quot;Blindsided&quot;\n\n\nChristopher Heyerdahl\nJake\n1\n9\n&quot;Next Generation&quot;\n\n\nKurtwood Smith\nSpencer Phillips\n1\n10\n&quot;Low and Away&quot;\n\n\nDavid Raynr\nKipling &quot;Kip&quot; Fuller\n1\n11\n&quot;16 Blown to 35&quot;\n\n\nSarah G. Buxton\nKatrina\n1\n11\n&quot;16 Blown to 35&quot;\n\n\nJason Priestley\nTober\n1\n12\n&quot;Mean Streets and Pastel Houses&quot;\n\n&#39;
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">right_tables</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;wikitable&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="nb">len</span><span class="p">(</span><span class="n">right_tables</span><span class="p">)</span>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">all_tables</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1022,13 +1098,89 @@ https://wikimediafoundation.org/
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>6
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">all_tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[20]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;\n\nActor\nCharacter\nSeason #\nEpisode #\nEpisode Title\n\n\nBarney Martin\nCharlie\n1\n1\n&quot;Pilot&quot;\n\n\nBrandon Douglas\nKenny Weckerle\n1\n1 &amp; 2\n&quot;Pilot&quot;\n\n\nReginald T. Dorsey\nTyrell &quot;Waxer&quot; Thompson\n1\n1 &amp; 2\n&quot;Pilot&quot;\n\n\nBilly Jayne\nMark Dorian\n1\n2\n&quot;America, What a Town&quot;\n\n\nSteve Antin\nStevie Delano\n1\n2\n&quot;America, What a Town&quot;\n\n\nTraci Lind\nNadia\n1\n2\n&quot;America, What a Town&quot;\n\n\nLeah Ayres\nSusan Chadwick\n1\n3\n&quot;Don\&#39;t Pet the Teacher&quot;\n\n\nGeoffrey Blake\nJeffrey Stone\n1\n3\n&quot;Don\&#39;t Pet the Teacher&quot;\n\n\nJosh Brolin\nTaylor Rolator\n1\n4\n&quot;My Future\&#39;s So Bright, I Gotta Wear Shades&quot;\n\n\nJamie Bozian\nKurt Niles\n1\n4\n&quot;My Future\&#39;s So Bright, I Gotta Wear Shades&quot;\n\n\nJohn D\&#39;Aquino\nVinny Morgan\n1\n4\n&quot;My Future\&#39;s So Bright, I Gotta Wear Shades&quot;\n\n\nTroy Byer\nPatty Blatcher\n1\n5\n&quot;The Worst Night of Your Life&quot;\n\n\nLezlie Deane\nJane Kinney\n1\n5\n&quot;The Worst Night of Your Life&quot;\n\n\nBlair Underwood\nReginald Brooks\n1\n6\n&quot;Gotta Finish the Riff&quot;\n\n\nRobert Picardo\nRalph Buckley\n1\n6\n&quot;Gotta Finish the Riff&quot;\n\n\nScott Schwartz\nJordan Simms\n1\n7\n&quot;Bad Influence&quot;\n\n\nLiane Curtis\nLauren Carlson\n1\n7\n&quot;Bad Influence&quot;\n\n\nByron Thames\nDylan Taylor\n1\n7\n&quot;Bad Influence&quot;\n\n\nSherilyn Fenn\nDiane Nelson\n1\n8\n&quot;Blindsided&quot;\n\n\nChristopher Heyerdahl\nJake\n1\n9\n&quot;Next Generation&quot;\n\n\nKurtwood Smith\nSpencer Phillips\n1\n10\n&quot;Low and Away&quot;\n\n\nDavid Raynr\nKipling &quot;Kip&quot; Fuller\n1\n11\n&quot;16 Blown to 35&quot;\n\n\nSarah G. Buxton\nKatrina\n1\n11\n&quot;16 Blown to 35&quot;\n\n\nJason Priestley\nTober\n1\n12\n&quot;Mean Streets and Pastel Houses&quot;\n\n&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Using-Attributes">
+<h2>Using Attributes<a class="headerlink" href="#Using-Attributes" title="Permalink to this headline">¶</a></h2>
+<div class="figure">
+<img alt="" src="_images/wikitable.png" />
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">right_tables</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;wikitable&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">right_tables</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[22]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
 <span></span>5
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [137]:
+<span></span>In [23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">type</span><span class="p">(</span><span class="n">right_tables</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[23]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>bs4.element.ResultSet
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1038,7 +1190,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[137]:
+<span></span>Out[24]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1224,7 +1376,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [41]:
+<span></span>In [25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1234,7 +1386,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[41]:
+<span></span>Out[25]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1244,7 +1396,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [46]:
+<span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1254,7 +1406,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[46]:
+<span></span>Out[26]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1264,7 +1416,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [66]:
+<span></span>In [27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1275,7 +1427,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [67]:
+<span></span>In [28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1285,7 +1437,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[67]:
+<span></span>Out[28]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1299,7 +1451,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [76]:
+<span></span>In [29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1311,7 +1463,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [77]:
+<span></span>In [30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1321,7 +1473,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[77]:
+<span></span>Out[30]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1331,7 +1483,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [79]:
+<span></span>In [31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1341,7 +1493,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[79]:
+<span></span>Out[31]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1351,27 +1503,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [63]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">act</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[63]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;\nBrigitta Dau\nClaire\n5\n3\n&quot;Buddy System&quot;\n&#39;]
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [89]:
+<span></span>In [32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1381,7 +1513,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[89]:
+<span></span>Out[32]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1391,7 +1523,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [90]:
+<span></span>In [33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1401,7 +1533,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[90]:
+<span></span>Out[33]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1411,7 +1543,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [91]:
+<span></span>In [34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1421,7 +1553,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[91]:
+<span></span>Out[34]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1431,7 +1563,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [92]:
+<span></span>In [35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1441,7 +1573,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[92]:
+<span></span>Out[35]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1451,7 +1583,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [93]:
+<span></span>In [36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1461,7 +1593,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[93]:
+<span></span>Out[36]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1471,7 +1603,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [96]:
+<span></span>In [37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1481,7 +1613,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[96]:
+<span></span>Out[37]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1491,7 +1623,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [97]:
+<span></span>In [38]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1501,7 +1633,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[97]:
+<span></span>Out[38]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1509,23 +1641,184 @@ https://wikimediafoundation.org/
 </pre></div>
 </div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">right_tables</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[39]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>135
+</pre></div>
+</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [118]:
+<span></span>In [40]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
-
 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">120</span><span class="p">):</span>
     <span class="n">items</span> <span class="o">=</span> <span class="n">right_tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
     <span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">b</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">135</span><span class="p">):</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">right_tables</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [120]:
+<span></span>In [42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">right_tables</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[42]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>105
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">c</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">right_tables</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">))):</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">right_tables</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">right_tables</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">))):</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">right_tables</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">e</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">right_tables</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">))):</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">right_tables</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+    <span class="n">e</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[46]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(&#39;&quot;Mean Streets and Pastel Houses&quot;&#39;,
+ &#39;&quot;School\&#39;s Out&quot;&#39;,
+ &#39;&quot;Loc\&#39;d Out Part 2&quot;&#39;,
+ &#39;&quot;Blackout&quot;&#39;,
+ &#39;&quot;Homegirls&quot;&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [47]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span><span class="p">[</span><span class="mi">130</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-47-b47504dfcc6c&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>a<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">130</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-red-fg">IndexError</span>: list index out of range
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span><span class="p">[</span><span class="mi">131</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-48-8718084a62c9&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>a<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">131</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-red-fg">IndexError</span>: list index out of range
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [49]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1535,7 +1828,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[120]:
+<span></span>Out[49]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1564,7 +1857,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [122]:
+<span></span>In [50]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1574,7 +1867,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[122]:
+<span></span>Out[50]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1607,41 +1900,41 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [123]:
+<span></span>In [51]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">actors</span> <span class="o">=</span> <span class="n">a</span><span class="p">[::</span><span class="mi">5</span><span class="p">]</span>
-<span class="n">character</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span>
-<span class="n">season</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span>
-<span class="n">episode</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span>
-<span class="n">title</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span>
+<span></span><span class="n">actors</span> <span class="o">=</span> <span class="n">a</span><span class="p">[::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span><span class="p">[::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">[::</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">character</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">season</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">episode</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">3</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">3</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span><span class="p">[</span><span class="mi">3</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">[</span><span class="mi">3</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">title</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">4</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">4</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span><span class="p">[</span><span class="mi">4</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">[</span><span class="mi">4</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [124]:
+<span></span>In [52]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">title</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+<span></span><span class="n">actors</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[124]:
+<span></span>Out[52]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;&quot;Pilot&quot;&#39;, &#39;&quot;Pilot&quot;&#39;, &#39;&quot;Pilot&quot;&#39;, &#39;&quot;America, What a Town&quot;&#39;]
+<span></span>[&#39;Barney Martin&#39;, &#39;Brandon Douglas&#39;, &#39;Reginald T. Dorsey&#39;, &#39;Billy Jayne&#39;]
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [134]:
+<span></span>In [53]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1651,7 +1944,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [129]:
+<span></span>In [54]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1661,7 +1954,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [132]:
+<span></span>In [55]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1675,7 +1968,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [133]:
+<span></span>In [56]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1685,7 +1978,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[133]:
+<span></span>Out[56]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1761,7 +2054,7 @@ https://wikimediafoundation.org/
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [135]:
+<span></span>In [57]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1771,64 +2064,24 @@ https://wikimediafoundation.org/
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[135]:
+<span></span>Out[57]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>(24, 5)
+<span></span>(129, 5)
 </pre></div>
 </div>
 </div>
-<p>Can you get me the other seasons?</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [136]:
+<span></span>In [58]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Season&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span>
+<span></span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data/jumpstreet.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[136]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;bound method Series.unique of 0     1
-1     1
-2     1
-3     1
-4     1
-5     1
-6     1
-7     1
-8     1
-9     1
-10    1
-11    1
-12    1
-13    1
-14    1
-15    1
-16    1
-17    1
-18    1
-19    1
-20    1
-21    1
-22    1
-23    1
-Name: Season, dtype: object&gt;
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Problem">
-<h2>Problem<a class="headerlink" href="#Problem" title="Permalink to this headline">¶</a></h2>
-<p>Continue to add other 4 seasons, giving a complete table with all guest
-stars for five seasons of 21 Jump Street.</p>
 </div>
 </div>
 
@@ -1842,7 +2095,7 @@ stars for five seasons of 21 Jump Street.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="08_scraping_and_nltk.html" class="btn btn-neutral float-right" title="Investigating texts from Project Gutenberg" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="08_scraping_and_nltk.html" class="btn btn-neutral float-right" title="Webscraping and Natural Language Processing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="05-intro_to_scraping_I.html" class="btn btn-neutral" title="Introduction to Web Scraping" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -1876,7 +2129,7 @@ stars for five seasons of 21 Jump Street.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'d77bfc7',
+            VERSION:'0d4042f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

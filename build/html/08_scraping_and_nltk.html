@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Investigating texts from Project Gutenberg &mdash; Data and Design version d77bfc7</title>
+  <title>Webscraping and Natural Language Processing &mdash; Data and Design version 0d4042f</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Data and Design version d77bfc7" href="index.html"/>
+    <link rel="top" title="Data and Design version 0d4042f" href="index.html"/>
         <link rel="next" title="Intro to Machine Learning" href="09_ML_Intro.html"/>
         <link rel="prev" title="Scraping the Street" href="07-scraping-jumpstreet.html"/> 
 
@@ -91,13 +91,21 @@
 <li class="toctree-l1"><a class="reference internal" href="04-ProjectA.html">Project A</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-intro_to_scraping_I.html">Introduction to Web Scraping</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07-scraping-jumpstreet.html">Scraping the Street</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Investigating texts from Project Gutenberg</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#Analyzing-the-Text-with-NLTK">Analyzing the Text with NLTK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#Lexical-Richness-of-Text">Lexical Richness of Text</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#Stopwords">Stopwords</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#Lists-Reminders">Lists Reminders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#set-and-tokenizing"><code class="docutils literal"><span class="pre">set</span></code> and tokenizing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#Task">Task</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Webscraping and Natural Language Processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Investigating-texts-from-Project-Gutenberg">Investigating texts from Project Gutenberg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#List-Review">List Review</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Scraping-the-Text">Scraping the Text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Using-Regular-Expressions">Using Regular Expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Tokenization">Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Stopwords">Stopwords</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Analyzing-the-Text-with-NLTK">Analyzing the Text with NLTK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Part-of-Speech-Tagging">Part of Speech Tagging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Lexical-Richness-of-Text">Lexical Richness of Text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Long-Words,-Bigrams,-Collacations">Long Words, Bigrams, Collacations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#WordClouds">WordClouds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Task">Task</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="09_ML_Intro.html">Intro to Machine Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="010-Decision-Trees.html">Decision Tree Classifiers</a></li>
 </ul>
@@ -144,7 +152,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Investigating texts from Project Gutenberg</li>
+      <li>Webscraping and Natural Language Processing</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -361,40 +369,83 @@ div.nboutput div.output_area.stderr {
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="Investigating-texts-from-Project-Gutenberg">
-<h1>Investigating texts from Project Gutenberg<a class="headerlink" href="#Investigating-texts-from-Project-Gutenberg" title="Permalink to this headline">¶</a></h1>
-<div class="figure">
-<img alt="" src="_images/gutenberg.png" />
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [25]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
+<div class="section" id="Webscraping-and-Natural-Language-Processing">
+<h1>Webscraping and Natural Language Processing<a class="headerlink" href="#Webscraping-and-Natural-Language-Processing" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+<span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+
+<span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/q7AM9QjCRrI&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen&gt;&lt;/iframe&gt;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/q7AM9QjCRrI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+</div>
+<div class="section" id="Investigating-texts-from-Project-Gutenberg">
+<h2>Investigating texts from Project Gutenberg<a class="headerlink" href="#Investigating-texts-from-Project-Gutenberg" title="Permalink to this headline">¶</a></h2>
+<div class="figure">
+<img alt="" src="_images/gutenberg.png" />
+</div>
+</div>
+<div class="section" id="List-Review">
+<h2>List Review<a class="headerlink" href="#List-Review" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Uncle&#39;</span><span class="p">,</span> <span class="s1">&#39;Stever&#39;</span><span class="p">,</span> <span class="s1">&#39;has&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;gun&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;Uncle&#39;, &#39;Stever&#39;, &#39;has&#39;, &#39;a&#39;, &#39;gun&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://www.gutenberg.org/files/15784/15784-0.txt&quot;</span>
+<span></span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;Uncle&#39;
 </pre></div>
 </div>
 </div>
@@ -404,7 +455,7 @@ div.nboutput div.output_area.stderr {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span></span><span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -414,7 +465,7 @@ div.nboutput div.output_area.stderr {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="nb">type</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span></span><span class="n">b</span>
 </pre></div>
 </div>
 </div>
@@ -424,37 +475,23 @@ div.nboutput div.output_area.stderr {
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>requests.models.Response
+<span></span>[&#39;uncle&#39;, &#39;stever&#39;, &#39;has&#39;, &#39;a&#39;, &#39;gun&#39;]
 </pre></div>
 </div>
 </div>
+</div>
+<div class="section" id="Scraping-the-Text">
+<h2>Scraping the Text<a class="headerlink" href="#Scraping-the-Text" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">soup_dos</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="nb">len</span><span class="p">(</span><span class="n">soup_dos</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[7]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>1
+<span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
 </pre></div>
 </div>
 </div>
@@ -464,27 +501,17 @@ div.nboutput div.output_area.stderr {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">dos_text</span> <span class="o">=</span> <span class="n">soup_dos</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+<span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://www.gutenberg.org/files/15784/15784-0.txt&quot;</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="nb">type</span><span class="p">(</span><span class="n">dos_text</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[9]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>str
+<span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -494,7 +521,7 @@ div.nboutput div.output_area.stderr {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="nb">len</span><span class="p">(</span><span class="n">dos_text</span><span class="p">)</span>
+<span></span><span class="nb">type</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -504,7 +531,7 @@ div.nboutput div.output_area.stderr {
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>550924
+<span></span>requests.models.Response
 </pre></div>
 </div>
 </div>
@@ -514,7 +541,7 @@ div.nboutput div.output_area.stderr {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">dos_text</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
+<span></span><span class="n">response</span>
 </pre></div>
 </div>
 </div>
@@ -524,26 +551,67 @@ div.nboutput div.output_area.stderr {
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&#39;The Project Gutenberg EBook of The Chronology of Ancient Kingdoms Amended\r\nby Isaac Newton\r\n\r\nThis e&#39;
+<span></span>&lt;Response [200]&gt;
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="Analyzing-the-Text-with-NLTK">
-<h1>Analyzing the Text with NLTK<a class="headerlink" href="#Analyzing-the-Text-with-NLTK" title="Permalink to this headline">¶</a></h1>
-<p>The Natural Language Toolkit is a popular Python library for text
-analysis. We will use it to split the text into individual
-words(tokens), and create a plot of the frequency distribution of the
-tokens.</p>
 <div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">soup_dos</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">soup_dos</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[13]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>1
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">dos_text</span> <span class="o">=</span> <span class="n">soup_dos</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">nltk</span>
-<span class="kn">from</span> <span class="nn">nltk</span> <span class="k">import</span> <span class="n">word_tokenize</span>
-<span class="n">tokens</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">dos_text</span><span class="p">)</span>
+<span></span><span class="nb">type</span><span class="p">(</span><span class="n">dos_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[15]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>str
 </pre></div>
 </div>
 </div>
@@ -553,7 +621,7 @@ tokens.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">tokens</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">dos_text</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -563,55 +631,48 @@ tokens.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;The&#39;,
- &#39;Project&#39;,
- &#39;Gutenberg&#39;,
- &#39;EBook&#39;,
- &#39;of&#39;,
- &#39;The&#39;,
- &#39;Chronology&#39;,
- &#39;of&#39;,
- &#39;Ancient&#39;,
- &#39;Kingdoms&#39;]
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">text</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+<span></span>550924
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">text</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span></span><span class="n">dos_text</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[18]:
+<span></span>Out[17]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;The&#39;,
- &#39;Project&#39;,
- &#39;Gutenberg&#39;,
- &#39;EBook&#39;,
- &#39;of&#39;,
- &#39;The&#39;,
- &#39;Chronology&#39;,
- &#39;of&#39;,
- &#39;Ancient&#39;,
- &#39;Kingdoms&#39;]
+<span></span>&#39;The Project Gutenberg EBook of The Chronology of Ancient Kingdoms Amended\r\nby Isaac Newton\r\n\r\nThis e&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Using-Regular-Expressions">
+<h2>Using Regular Expressions<a class="headerlink" href="#Using-Regular-Expressions" title="Permalink to this headline">¶</a></h2>
+<div class="figure">
+<img alt="" src="https://imgs.xkcd.com/comics/regular_expressions.png" />
+</div>
+<p>Regular expressions are a way to parse text using symbols to represent
+different kinds of textual characters. For example, in the above
+sentence, notice that we have some symbols that are only there to impart
+formatting. If we want to remove these, and only have the textual
+pieces, we can use a regular expression to find only words.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
 </pre></div>
 </div>
 </div>
@@ -621,27 +682,17 @@ tokens.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">fdist</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">FreqDist</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="s1">&#39;Who knew Johnny Depp was an undercover police officer (with Richard Greico)!&#39;</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="nb">type</span><span class="p">(</span><span class="n">fdist</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[20]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>nltk.probability.FreqDist
+<span></span><span class="n">ds</span> <span class="o">=</span> <span class="s1">&#39;d\w+&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -651,7 +702,7 @@ tokens.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">fdist</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span></span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -661,105 +712,78 @@ tokens.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[(&#39;,&#39;, 8704),
- (&#39;the&#39;, 7568),
- (&#39;and&#39;, 5062),
- (&#39;of&#39;, 5017),
- (&#39;.&#39;, 3525),
- (&#39;in&#39;, 1805),
- (&#39;to&#39;, 1508),
- (&#39;;&#39;, 1200),
- (&#39;:&#39;, 1158),
- (&#39;[&#39;, 1023),
- (&#39;]&#39;, 1023),
- (&#39;that&#39;, 1004),
- (&#39;by&#39;, 970),
- (&#39;was&#39;, 941),
- (&#39;a&#39;, 804),
- (&#39;his&#39;, 703),
- (&#39;with&#39;, 612),
- (&#39;or&#39;, 588),
- (&#39;years&#39;, 567),
- (&#39;from&#39;, 531),
- (&#39;for&#39;, 482),
- (&#39;were&#39;, 455),
- (&#39;their&#39;, 405),
- (&#39;is&#39;, 394),
- (&#39;he&#39;, 392),
- (&#39;this&#39;, 389),
- (&#39;year&#39;, 384),
- (&#39;_Egypt_&#39;, 380),
- (&#39;King&#39;, 378),
- (&#39;which&#39;, 373),
- (&#39;as&#39;, 373),
- (&#39;at&#39;, 357),
- (&#39;after&#39;, 348),
- (&#39;they&#39;, 345),
- (&#39;into&#39;, 342),
- (&#39;it&#39;, 341),
- (&#39;who&#39;, 322),
- (&#39;l.&#39;, 313),
- (&#39;son&#39;, 310),
- (&#39;be&#39;, 303),
- (&#39;Reign&#39;, 290),
- (&#39;before&#39;, 284),
- (&#39;Kings&#39;, 265),
- (&#39;first&#39;, 261),
- (&#39;about&#39;, 258),
- (&#39;had&#39;, 250),
- (&#39;not&#39;, 250),
- (&#39;but&#39;, 242),
- (&#39;The&#39;, 236),
- (&#39;one&#39;, 235)]
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">fdist</span><span class="p">[</span><span class="s1">&#39;blood&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[22]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>5
+<span></span>[&#39;dercover&#39;]
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [23]:
+<span></span>In [22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">fdist</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">FreqDist</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">dos_text</span><span class="p">))</span>
+<span></span><span class="n">ds</span> <span class="o">=</span> <span class="s1">&#39;D\w+&#39;</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [26]:
+<span></span>In [23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">fdist</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span></span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[23]:
+</pre></div>
 </div>
-<div class="output_area docutils container">
-<img alt="_images/08_scraping_and_nltk_22_0.png" src="_images/08_scraping_and_nltk_22_0.png" />
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;Depp&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">ds</span> <span class="o">=</span> <span class="s1">&#39;[dD]\w+&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[25]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;Depp&#39;, &#39;dercover&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">words</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;\w+&#39;</span><span class="p">,</span> <span class="n">dos_text</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -768,1220 +792,130 @@ tokens.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">fdist</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">cumulative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span></span><span class="n">words</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[27]:
+</pre></div>
 </div>
-<div class="output_area docutils container">
-<img alt="_images/08_scraping_and_nltk_23_0.png" src="_images/08_scraping_and_nltk_23_0.png" />
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;The&#39;,
+ &#39;Project&#39;,
+ &#39;Gutenberg&#39;,
+ &#39;EBook&#39;,
+ &#39;of&#39;,
+ &#39;The&#39;,
+ &#39;Chronology&#39;,
+ &#39;of&#39;,
+ &#39;Ancient&#39;,
+ &#39;Kingdoms&#39;]
+</pre></div>
 </div>
 </div>
+</div>
+<div class="section" id="Tokenization">
+<h2>Tokenization<a class="headerlink" href="#Tokenization" title="Permalink to this headline">¶</a></h2>
+<p>Turning the document into a collection of individual items – words.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">tagged</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">pos_tag</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span></span><span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="k">import</span> <span class="n">RegexpTokenizer</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">tagged</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span></span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">RegexpTokenizer</span><span class="p">(</span><span class="s1">&#39;\w+&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">dos_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">tokens</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[29]:
+<span></span>Out[31]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[(&#39;The&#39;, &#39;DT&#39;),
- (&#39;Project&#39;, &#39;NNP&#39;),
- (&#39;Gutenberg&#39;, &#39;NNP&#39;),
- (&#39;EBook&#39;, &#39;NNP&#39;),
- (&#39;of&#39;, &#39;IN&#39;),
- (&#39;The&#39;, &#39;DT&#39;),
- (&#39;Chronology&#39;, &#39;NNP&#39;),
- (&#39;of&#39;, &#39;IN&#39;),
- (&#39;Ancient&#39;, &#39;NNP&#39;),
- (&#39;Kingdoms&#39;, &#39;NNP&#39;)]
+<span></span>[&#39;The&#39;, &#39;Project&#39;, &#39;Gutenberg&#39;, &#39;EBook&#39;, &#39;of&#39;, &#39;The&#39;, &#39;Chronology&#39;, &#39;of&#39;]
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">text</span><span class="o">.</span><span class="n">similar</span><span class="p">(</span><span class="s2">&quot;god&quot;</span><span class="p">)</span>
+<span></span><span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+    <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-and king into reign city or in the of to first people empire temple
-history kings year reigns place expedition
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [37]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">text</span><span class="o">.</span><span class="n">common_contexts</span><span class="p">([</span><span class="s2">&quot;king&quot;</span><span class="p">,</span> <span class="s2">&quot;lord&quot;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-now_of only_of the_and
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [40]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">text</span><span class="o">.</span><span class="n">dispersion_plot</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">500</span><span class="p">:</span><span class="mi">510</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="_images/08_scraping_and_nltk_28_0.png" src="_images/08_scraping_and_nltk_28_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [43]:
+<span></span>In [33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span></span><span class="n">words</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[43]:
+<span></span>Out[33]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>106732
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [44]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[44]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;!&#39;,
- &#39;#&#39;,
- &#39;$&#39;,
- &#39;%&#39;,
- &#39;&amp;&#39;,
- &quot;&#39;&quot;,
- &quot;&#39;&#39;&quot;,
- &quot;&#39;AS-IS&quot;,
- &quot;&#39;Till&quot;,
- &quot;&#39;d&quot;,
- &quot;&#39;s&quot;,
- &quot;&#39;till&quot;,
- &#39;(&#39;,
- &#39;)&#39;,
- &#39;*&#39;,
- &#39;***&#39;,
- &#39;*****&#39;,
- &#39;,&#39;,
- &#39;-&#39;,
- &#39;--&#39;,
- &#39;.&#39;,
- &#39;//gutenberg.net/license&#39;,
- &#39;//pglaf.org&#39;,
- &#39;//pglaf.org/donate&#39;,
- &#39;//pglaf.org/fundraising&#39;,
- &#39;//www.gutenberg.net&#39;,
- &#39;//www.gutenberg.org/1/5/7/8/15784/&#39;,
- &#39;//www.pglaf.org&#39;,
- &#39;00&#39;,
- &#39;1&#39;,
- &#39;1.&#39;,
- &#39;1.A&#39;,
- &#39;1.B&#39;,
- &#39;1.C&#39;,
- &#39;1.D&#39;,
- &#39;1.E&#39;,
- &#39;1.E.1&#39;,
- &#39;1.E.2&#39;,
- &#39;1.E.3&#39;,
- &#39;1.E.4&#39;,
- &#39;1.E.5&#39;,
- &#39;1.E.6&#39;,
- &#39;1.E.7&#39;,
- &#39;1.E.8&#39;,
- &#39;1.E.9&#39;,
- &#39;1.F&#39;,
- &#39;1.F.1&#39;,
- &#39;1.F.2&#39;,
- &#39;1.F.3&#39;,
- &#39;1.F.4&#39;,
- &#39;1.F.5&#39;,
- &#39;1.F.6&#39;,
- &#39;10&#39;,
- &#39;10.&#39;,
- &#39;100&#39;,
- &#39;10000&#39;,
- &#39;1002&#39;,
- &#39;1005&#39;,
- &#39;1006&#39;,
- &#39;1007&#39;,
- &#39;1008&#39;,
- &#39;101&#39;,
- &#39;1010&#39;,
- &#39;1014&#39;,
- &#39;1015&#39;,
- &#39;1017&#39;,
- &#39;1019&#39;,
- &#39;102&#39;,
- &#39;1020&#39;,
- &#39;1028&#39;,
- &#39;103&#39;,
- &#39;1030&#39;,
- &#39;1034&#39;,
- &#39;1035&#39;,
- &#39;1039&#39;,
- &#39;104&#39;,
- &#39;1043&#39;,
- &#39;1045&#39;,
- &#39;1046&#39;,
- &#39;1047&#39;,
- &#39;1048&#39;,
- &#39;105&#39;,
- &#39;1052&#39;,
- &#39;1053&#39;,
- &#39;1059&#39;,
- &#39;105th&#39;,
- &#39;106&#39;,
- &#39;1060&#39;,
- &#39;1069&#39;,
- &#39;107&#39;,
- &#39;1070&#39;,
- &#39;108&#39;,
- &#39;1080&#39;,
- &#39;1085&#39;,
- &#39;109&#39;,
- &#39;1090&#39;,
- &#39;11&#39;,
- &#39;11.&#39;,
- &#39;110&#39;,
- &#39;1100&#39;,
- &#39;11000&#39;,
- &#39;111&#39;,
- &#39;112&#39;,
- &#39;1125&#39;,
- &#39;113&#39;,
- &#39;11340&#39;,
- &#39;114&#39;,
- &#39;115&#39;,
- &#39;116&#39;,
- &#39;117&#39;,
- &#39;118&#39;,
- &#39;119&#39;,
- &#39;11th&#39;,
- &#39;11⅔&#39;,
- &#39;12&#39;,
- &#39;12.&#39;,
- &#39;120&#39;,
- &#39;12000&#39;,
- &#39;120000&#39;,
- &#39;121&#39;,
- &#39;122&#39;,
- &#39;1224&#39;,
- &#39;123&#39;,
- &#39;1236&#39;,
- &#39;124&#39;,
- &#39;125&#39;,
- &#39;126&#39;,
- &#39;127&#39;,
- &#39;128&#39;,
- &#39;129&#39;,
- &#39;12th&#39;,
- &#39;13&#39;,
- &#39;13.&#39;,
- &#39;130&#39;,
- &#39;131&#39;,
- &#39;132&#39;,
- &#39;133&#39;,
- &#39;134&#39;,
- &#39;1340&#39;,
- &#39;135&#39;,
- &#39;136&#39;,
- &#39;1360&#39;,
- &#39;137&#39;,
- &#39;138&#39;,
- &#39;139&#39;,
- &#39;13th&#39;,
- &#39;13°&#39;,
- &#39;14&#39;,
- &#39;14.&#39;,
- &#39;140&#39;,
- &#39;141&#39;,
- &#39;142&#39;,
- &#39;143&#39;,
- &#39;144&#39;,
- &#39;145&#39;,
- &#39;146&#39;,
- &#39;146½&#39;,
- &#39;147&#39;,
- &#39;148&#39;,
- &#39;149&#39;,
- &#39;14th&#39;,
- &#39;15&#39;,
- &#39;15.&#39;,
- &#39;150&#39;,
- &#39;1500&#39;,
- &#39;15000&#39;,
- &#39;150th&#39;,
- &#39;151&#39;,
- &#39;152&#39;,
- &#39;153&#39;,
- &#39;154&#39;,
- &#39;155&#39;,
- &#39;156&#39;,
- &#39;157&#39;,
- &#39;15784&#39;,
- &#39;15784-0.txt&#39;,
- &#39;15784-0.zip&#39;,
- &#39;158&#39;,
- &#39;159&#39;,
- &#39;15th&#39;,
- &#39;15¼&#39;,
- &#39;16&#39;,
- &#39;16.&#39;,
- &#39;160&#39;,
- &#39;160th&#39;,
- &#39;161&#39;,
- &#39;162&#39;,
- &#39;163&#39;,
- &#39;164&#39;,
- &#39;1643&#39;,
- &#39;165&#39;,
- &#39;166&#39;,
- &#39;167&#39;,
- &#39;168&#39;,
- &#39;1689&#39;,
- &#39;169&#39;,
- &#39;1690&#39;,
- &#39;16th&#39;,
- &#39;17&#39;,
- &#39;17.&#39;,
- &#39;170&#39;,
- &#39;17000&#39;,
- &#39;171&#39;,
- &#39;172&#39;,
- &#39;173&#39;,
- &#39;174&#39;,
- &#39;175&#39;,
- &#39;176&#39;,
- &#39;176th&#39;,
- &#39;177&#39;,
- &#39;178&#39;,
- &#39;179&#39;,
- &#39;17th&#39;,
- &#39;17¼&#39;,
- &#39;18&#39;,
- &#39;18.&#39;,
- &#39;180&#39;,
- &#39;180000&#39;,
- &#39;181&#39;,
- &#39;182&#39;,
- &#39;183&#39;,
- &#39;184&#39;,
- &#39;185&#39;,
- &#39;185000&#39;,
- &#39;186&#39;,
- &#39;187&#39;,
- &#39;187½&#39;,
- &#39;188&#39;,
- &#39;189&#39;,
- &#39;18th&#39;,
- &#39;18¾&#39;,
- &#39;19&#39;,
- &#39;19.&#39;,
- &#39;19.-22&#39;,
- &#39;190&#39;,
- &#39;1903&#39;,
- &#39;191&#39;,
- &#39;192&#39;,
- &#39;193&#39;,
- &#39;194&#39;,
- &#39;195&#39;,
- &#39;196&#39;,
- &#39;197&#39;,
- &#39;198&#39;,
- &#39;199&#39;,
- &#39;19th&#39;,
- &#39;19°&#39;,
- &#39;19½&#39;,
- &#39;2&#39;,
- &#39;2.&#39;,
- &#39;20&#39;,
- &#39;20.&#39;,
- &#39;200&#39;,
- &#39;2001&#39;,
- &#39;2005&#39;,
- &#39;201&#39;,
- &#39;202&#39;,
- &#39;203&#39;,
- &#39;204&#39;,
- &#39;205&#39;,
- &#39;206&#39;,
- &#39;207&#39;,
- &#39;208&#39;,
- &#39;209&#39;,
- &#39;20th&#39;,
- &#39;21&#39;,
- &#39;21.&#39;,
- &#39;210&#39;,
- &#39;211&#39;,
- &#39;212&#39;,
- &#39;213&#39;,
- &#39;214&#39;,
- &#39;215&#39;,
- &#39;216&#39;,
- &#39;217&#39;,
- &#39;218&#39;,
- &#39;219&#39;,
- &#39;21st&#39;,
- &#39;21½&#39;,
- &#39;22&#39;,
- &#39;22.&#39;,
- &#39;220&#39;,
- &#39;221&#39;,
- &#39;222&#39;,
- &#39;223&#39;,
- &#39;224&#39;,
- &#39;224th&#39;,
- &#39;225&#39;,
- &#39;226&#39;,
- &#39;227&#39;,
- &#39;228&#39;,
- &#39;229&#39;,
- &#39;22d&#39;,
- &#39;22°&#39;,
- &#39;23&#39;,
- &#39;23.&#39;,
- &#39;230&#39;,
- &#39;231&#39;,
- &#39;232&#39;,
- &#39;233&#39;,
- &#39;234&#39;,
- &#39;235&#39;,
- &#39;236&#39;,
- &#39;237&#39;,
- &#39;238&#39;,
- &#39;239&#39;,
- &#39;23d&#39;,
- &#39;23°&#39;,
- &#39;24&#39;,
- &#39;24.&#39;,
- &#39;240&#39;,
- &#39;241&#39;,
- &#39;242&#39;,
- &#39;243&#39;,
- &#39;244&#39;,
- &#39;245&#39;,
- &#39;246&#39;,
- &#39;247&#39;,
- &#39;248&#39;,
- &#39;249&#39;,
- &#39;24th&#39;,
- &#39;24°&#39;,
- &#39;25&#39;,
- &#39;250&#39;,
- &#39;251&#39;,
- &#39;252&#39;,
- &#39;253&#39;,
- &#39;254&#39;,
- &#39;255&#39;,
- &#39;256&#39;,
- &#39;257&#39;,
- &#39;258&#39;,
- &#39;259&#39;,
- &#39;25th&#39;,
- &#39;25°&#39;,
- &#39;26&#39;,
- &#39;26.&#39;,
- &#39;260&#39;,
- &#39;261&#39;,
- &#39;262&#39;,
- &#39;2627&#39;,
- &#39;263&#39;,
- &#39;264&#39;,
- &#39;2645&#39;,
- &#39;265&#39;,
- &#39;266&#39;,
- &#39;267&#39;,
- &#39;268&#39;,
- &#39;269&#39;,
- &#39;26th&#39;,
- &#39;27&#39;,
- &#39;27.&#39;,
- &#39;270&#39;,
- &#39;271&#39;,
- &#39;272&#39;,
- &#39;273&#39;,
- &#39;274&#39;,
- &#39;275&#39;,
- &#39;276&#39;,
- &#39;277&#39;,
- &#39;278&#39;,
- &#39;279&#39;,
- &#39;27th&#39;,
- &#39;28&#39;,
- &#39;28.&#39;,
- &#39;280&#39;,
- &#39;281&#39;,
- &#39;282&#39;,
- &#39;283&#39;,
- &#39;284&#39;,
- &#39;285&#39;,
- &#39;286&#39;,
- &#39;287&#39;,
- &#39;288&#39;,
- &#39;289&#39;,
- &#39;28th&#39;,
- &#39;28°&#39;,
- &#39;29&#39;,
- &#39;29.&#39;,
- &#39;290&#39;,
- &#39;291&#39;,
- &#39;292&#39;,
- &#39;293&#39;,
- &#39;294&#39;,
- &#39;295&#39;,
- &#39;296&#39;,
- &#39;297&#39;,
- &#39;298&#39;,
- &#39;299&#39;,
- &#39;29th&#39;,
- &#39;2°&#39;,
- &#39;3&#39;,
- &#39;3.&#39;,
- &#39;30&#39;,
- &#39;300&#39;,
- &#39;3000&#39;,
- &#39;30000&#39;,
- &#39;301&#39;,
- &#39;302&#39;,
- &#39;303&#39;,
- &#39;304&#39;,
- &#39;305&#39;,
- &#39;306&#39;,
- &#39;307&#39;,
- &#39;308&#39;,
- &#39;309&#39;,
- &#39;30th&#39;,
- &#39;31&#39;,
- &#39;310&#39;,
- &#39;311&#39;,
- &#39;312&#39;,
- &#39;313&#39;,
- &#39;314&#39;,
- &#39;315&#39;,
- &#39;316&#39;,
- &#39;316th&#39;,
- &#39;317&#39;,
- &#39;318&#39;,
- &#39;319&#39;,
- &#39;32&#39;,
- &#39;32.&#39;,
- &#39;320&#39;,
- &#39;321&#39;,
- &#39;322&#39;,
- &#39;323&#39;,
- &#39;324&#39;,
- &#39;325&#39;,
- &#39;326&#39;,
- &#39;327&#39;,
- &#39;328&#39;,
- &#39;329&#39;,
- &#39;32d&#39;,
- &#39;33&#39;,
- &#39;33.&#39;,
- &#39;330&#39;,
- &#39;331&#39;,
- &#39;332&#39;,
- &#39;333&#39;,
- &#39;334&#39;,
- &#39;335&#39;,
- &#39;336&#39;,
- &#39;337&#39;,
- &#39;338&#39;,
- &#39;339&#39;,
- &#39;33d&#39;,
- &#39;34&#39;,
- &#39;34.&#39;,
- &#39;340&#39;,
- &#39;341&#39;,
- &#39;342&#39;,
- &#39;343&#39;,
- &#39;344&#39;,
- &#39;345&#39;,
- &#39;345._&#39;,
- &#39;346&#39;,
- &#39;346._&#39;,
- &#39;347&#39;,
- &#39;348&#39;,
- &#39;349&#39;,
- &#39;34°&#39;,
- &#39;35&#39;,
- &#39;350&#39;,
- &#39;351&#39;,
- &#39;352&#39;,
- &#39;353&#39;,
- &#39;354&#39;,
- &#39;355&#39;,
- &#39;356&#39;,
- &#39;357&#39;,
- &#39;358&#39;,
- &#39;359&#39;,
- &#39;35th&#39;,
- &#39;36&#39;,
- &#39;36.&#39;,
- &#39;360&#39;,
- &#39;361&#39;,
- &#39;362&#39;,
- &#39;363&#39;,
- &#39;364&#39;,
- &#39;365&#39;,
- &#39;366&#39;,
- &#39;367&#39;,
- &#39;368&#39;,
- &#39;369&#39;,
- &#39;36°&#39;,
- &#39;36½&#39;,
- &#39;37&#39;,
- &#39;370&#39;,
- &#39;371&#39;,
- &#39;372&#39;,
- &#39;373&#39;,
- &#39;374&#39;,
- &#39;375&#39;,
- &#39;376&#39;,
- &#39;377&#39;,
- &#39;378&#39;,
- &#39;379&#39;,
- &#39;37th&#39;,
- &#39;37°&#39;,
- &#39;37½&#39;,
- &#39;38&#39;,
- &#39;380&#39;,
- &#39;381&#39;,
- &#39;382&#39;,
- &#39;383&#39;,
- &#39;3830&#39;,
- &#39;384&#39;,
- &#39;385&#39;,
- &#39;386&#39;,
- &#39;387&#39;,
- &#39;388&#39;,
- &#39;389&#39;,
- &#39;38th&#39;,
- &#39;39&#39;,
- &#39;390&#39;,
- &#39;391&#39;,
- &#39;392&#39;,
- &#39;393&#39;,
- &#39;394&#39;,
- &#39;395&#39;,
- &#39;396&#39;,
- &#39;397&#39;,
- &#39;398&#39;,
- &#39;399&#39;,
- &#39;3d&#39;,
- &#39;3°&#39;,
- &#39;4&#39;,
- &#39;4.&#39;,
- &#39;40&#39;,
- &#39;40.&#39;,
- &#39;400&#39;,
- &#39;401&#39;,
- &#39;402&#39;,
- &#39;403&#39;,
- &#39;404&#39;,
- &#39;405&#39;,
- &#39;406&#39;,
- &#39;407&#39;,
- &#39;408&#39;,
- &#39;409&#39;,
- &#39;40th&#39;,
- &#39;41&#39;,
- &#39;41.&#39;,
- &#39;410&#39;,
- &#39;411&#39;,
- &#39;412&#39;,
- &#39;413&#39;,
- &#39;414&#39;,
- &#39;415&#39;,
- &#39;416&#39;,
- &#39;417&#39;,
- &#39;418&#39;,
- &#39;419&#39;,
- &#39;41st&#39;,
- &#39;42&#39;,
- &#39;420&#39;,
- &#39;421&#39;,
- &#39;422&#39;,
- &#39;423&#39;,
- &#39;424&#39;,
- &#39;425&#39;,
- &#39;426&#39;,
- &#39;427&#39;,
- &#39;428&#39;,
- &#39;429&#39;,
- &#39;43&#39;,
- &#39;430&#39;,
- &#39;431&#39;,
- &#39;432&#39;,
- &#39;433&#39;,
- &#39;434&#39;,
- &#39;435&#39;,
- &#39;436&#39;,
- &#39;437&#39;,
- &#39;438&#39;,
- &#39;439&#39;,
- &#39;43d&#39;,
- &#39;44&#39;,
- &#39;440&#39;,
- &#39;441&#39;,
- &#39;442&#39;,
- &#39;443&#39;,
- &#39;444&#39;,
- &#39;445&#39;,
- &#39;446&#39;,
- &#39;447&#39;,
- &#39;448&#39;,
- &#39;449&#39;,
- &#39;44th&#39;,
- &#39;45&#39;,
- &#39;450&#39;,
- &#39;451&#39;,
- &#39;452&#39;,
- &#39;453&#39;,
- &#39;454&#39;,
- &#39;455&#39;,
- &#39;4557&#39;,
- &#39;456&#39;,
- &#39;4568&#39;,
- &#39;457&#39;,
- &#39;458&#39;,
- &#39;459&#39;,
- &#39;46&#39;,
- &#39;460&#39;,
- &#39;461&#39;,
- &#39;462&#39;,
- &#39;463&#39;,
- &#39;464&#39;,
- &#39;465&#39;,
- &#39;466&#39;,
- &#39;467&#39;,
- &#39;468&#39;,
- &#39;469&#39;,
- &#39;46th&#39;,
- &#39;47&#39;,
- &#39;47.&#39;,
- &#39;470&#39;,
- &#39;471&#39;,
- &#39;472&#39;,
- &#39;473&#39;,
- &#39;473000&#39;,
- &#39;474&#39;,
- &#39;475&#39;,
- &#39;476&#39;,
- &#39;477&#39;,
- &#39;478&#39;,
- &#39;479&#39;,
- &#39;47th&#39;,
- &#39;48&#39;,
- &#39;480&#39;,
- &#39;481&#39;,
- &#39;482&#39;,
- &#39;483&#39;,
- &#39;484&#39;,
- &#39;485&#39;,
- &#39;486&#39;,
- &#39;48th&#39;,
- &#39;49&#39;,
- &#39;491&#39;,
- &#39;49th&#39;,
- &#39;49⅓&#39;,
- &#39;4th&#39;,
- &#39;4°&#39;,
- &#39;4½&#39;,
- &#39;5&#39;,
- &#39;5,000&#39;,
- &#39;5.&#39;,
- &#39;50&#39;,
- &#39;500&#39;,
- &#39;501&#39;,
- &#39;504&#39;,
- &#39;507&#39;,
- &#39;508&#39;,
- &#39;50th&#39;,
- &#39;51&#39;,
- &#39;513&#39;,
- &#39;515&#39;,
- &#39;52&#39;,
- &#39;52.&#39;,
- &#39;520&#39;,
- &#39;521&#39;,
- &#39;528&#39;,
- &#39;529&#39;,
- &#39;53&#39;,
- &#39;530&#39;,
- &#39;536&#39;,
- &#39;538&#39;,
- &#39;54&#39;,
- &#39;544&#39;,
- &#39;549&#39;,
- &#39;55&#39;,
- &#39;550&#39;,
- &#39;555&#39;,
- &#39;557&#39;,
- &#39;56&#39;,
- &#39;56.&#39;,
- &#39;562&#39;,
- &#39;568&#39;,
- &#39;569&#39;,
- &#39;57&#39;,
- &#39;57.&#39;,
- &#39;572&#39;,
- &#39;58&#39;,
- &#39;580&#39;,
- &#39;580000&#39;,
- &#39;584&#39;,
- &#39;585&#39;,
- &#39;586&#39;,
- &#39;588&#39;,
- &#39;59&#39;,
- &#39;590&#39;,
- &#39;596&#39;,
- &#39;596-1887&#39;,
- &#39;598&#39;,
- &#39;599&#39;,
- &#39;5th&#39;,
- &#39;5°&#39;,
- &#39;6&#39;,
- &#39;6.&#39;,
- &#39;60&#39;,
- &#39;600&#39;,
- &#39;6000&#39;,
- &#39;601&#39;,
- &#39;602&#39;,
- &#39;604&#39;,
- &#39;605&#39;,
- &#39;606&#39;,
- &#39;607&#39;,
- &#39;609&#39;,
- &#39;61&#39;,
- &#39;610&#39;,
- &#39;611&#39;,
- &#39;614&#39;,
- &#39;617&#39;,
- &#39;618&#39;,
- &#39;62&#39;,
- &#39;621&#39;,
- &#39;623&#39;,
- &#39;625&#39;,
- &#39;627&#39;,
- &#39;63&#39;,
- &#39;63.&#39;,
- &#39;633&#39;,
- &#39;635&#39;,
- &#39;636&#39;,
- &#39;64&#39;,
- &#39;64-6221541&#39;,
- &#39;640&#39;,
- &#39;647&#39;,
- &#39;648&#39;,
- &#39;65&#39;,
- &#39;652&#39;,
- &#39;655&#39;,
- &#39;657&#39;,
- &#39;658&#39;,
- &#39;65th&#39;,
- &#39;66&#39;,
- &#39;661&#39;,
- &#39;668&#39;,
- &#39;66½&#39;,
- &#39;67&#39;,
- &#39;67.&#39;,
- &#39;671&#39;,
- &#39;673&#39;,
- &#39;676&#39;,
- &#39;678&#39;,
- &#39;68&#39;,
- &#39;680&#39;,
- &#39;681&#39;,
- &#39;682&#39;,
- &#39;684&#39;,
- &#39;687&#39;,
- &#39;68th&#39;,
- &#39;69&#39;,
- &#39;69.&#39;,
- &#39;697&#39;,
- &#39;698&#39;,
- &#39;6°&#39;,
- &#39;6½&#39;,
- &#39;7&#39;,
- &#39;7.&#39;,
- &#39;70&#39;,
- &#39;700000&#39;,
- &#39;701&#39;,
- &#39;705&#39;,
- &#39;708&#39;,
- &#39;71&#39;,
- &#39;710&#39;,
- &#39;711&#39;,
- &#39;714&#39;,
- &#39;717&#39;,
- &#39;719&#39;,
- &#39;72&#39;,
- &#39;721&#39;,
- &#39;729&#39;,
- &#39;72d&#39;,
- &#39;73&#39;,
- &#39;730&#39;,
- &#39;74&#39;,
- &#39;740&#39;,
- &#39;745&#39;,
- &#39;747&#39;,
- &#39;74th&#39;,
- &#39;75&#39;,
- &#39;751&#39;,
- &#39;755&#39;,
- &#39;75th&#39;,
- &#39;76&#39;,
- &#39;760&#39;,
- &#39;761&#39;,
- &#39;763&#39;,
- &#39;76th&#39;,
- &#39;77&#39;,
- &#39;772&#39;,
- &#39;773&#39;,
- &#39;776&#39;,
- &#39;77th&#39;,
- &#39;78&#39;,
- &#39;788&#39;,
- &#39;78th&#39;,
- &#39;79&#39;,
- &#39;790&#39;,
- &#39;792&#39;,
- &#39;794&#39;,
- &#39;7th&#39;,
- &#39;7°&#39;,
- &#39;8&#39;,
- &#39;8.&#39;,
- &#39;80&#39;,
- &#39;801&#39;,
- &#39;804&#39;,
- &#39;808&#39;,
- &#39;809&#39;,
- &#39;81&#39;,
- &#39;816&#39;,
- &#39;817&#39;,
- &#39;82&#39;,
- &#39;820&#39;,
- &#39;824&#39;,
- &#39;825&#39;,
- &#39;828&#39;,
- &#39;83&#39;,
- &#39;838&#39;,
- &#39;83d&#39;,
- &#39;84&#39;,
- &#39;84116&#39;,
- &#39;844&#39;,
- &#39;85&#39;,
- &#39;850&#39;,
- &#39;852&#39;,
- &#39;86&#39;,
- &#39;860&#39;,
- &#39;87&#39;,
- &#39;870&#39;,
- &#39;88&#39;,
- &#39;88.&#39;,
- &#39;883&#39;,
- &#39;884&#39;,
- &#39;887&#39;,
- &#39;89&#39;,
- &#39;895&#39;,
- &#39;896&#39;,
- &#39;8th&#39;,
- &#39;8°&#39;,
- &#39;9&#39;,
- &#39;9.&#39;,
- &#39;90&#39;,
- &#39;9000&#39;,
- &#39;901&#39;,
- &#39;903&#39;,
- &#39;904&#39;,
- &#39;909&#39;,
- &#39;91&#39;,
- &#39;912&#39;,
- &#39;918&#39;,
- &#39;919&#39;,
- &#39;92&#39;,
- &#39;924&#39;,
- &#39;925&#39;,
- &#39;927&#39;,
- &#39;928&#39;,
- &#39;93&#39;,
- &#39;930&#39;,
- &#39;934&#39;,
- &#39;936&#39;,
- &#39;937&#39;,
- &#39;938&#39;,
- &#39;939&#39;,
- &#39;94&#39;,
- &#39;940&#39;,
- &#39;942&#39;,
- &#39;943&#39;,
- &#39;944&#39;,
- &#39;945&#39;,
- &#39;946&#39;,
- &#39;947&#39;,
- &#39;95&#39;,
- &#39;956&#39;,
- &#39;958&#39;,
- &#39;96&#39;,
- &#39;960&#39;,
- &#39;962&#39;,
- &#39;963&#39;,
- &#39;964&#39;,
- &#39;965&#39;,
- &#39;966&#39;,
- &#39;967&#39;,
- &#39;968&#39;,
- &#39;97&#39;,
- &#39;971&#39;,
- &#39;974&#39;,
- &#39;978&#39;,
- &#39;979&#39;,
- &#39;98&#39;,
- &#39;980&#39;,
- &#39;983&#39;,
- &#39;987&#39;,
- &#39;988&#39;,
- &#39;989&#39;,
- &#39;99&#39;,
- &#39;990&#39;,
- &#39;993&#39;,
- &#39;994&#39;,
- &#39;99712.&#39;,
- &#39;9th&#39;,
- &#39;9°&#39;,
- &#39;:&#39;,
- &#39;;&#39;,
- &#39;&gt;&#39;,
- &#39;?&#39;,
- &#39;@&#39;,
- &#39;A&#39;,
- &#39;ABCD&#39;,
- &#39;ABEF&#39;,
- &#39;ACTUAL&#39;,
- &#39;AGREE&#39;,
- &#39;AGREEMENT&#39;,
- &#39;AK&#39;,
- &#39;AMENDED&#39;,
- &#39;ANCIENT&#39;,
- &#39;AND&#39;,
- &#39;ANY&#39;,
- &#39;ANYTHING&#39;,
- &#39;ASCII&#39;,
- &#39;Ab&#39;,
- &#39;Abhorrence&#39;,
- &#39;Aborigines&#39;,
- &#39;About&#39;,
- &#39;Abstinentia&#39;,
- &#39;Abyden&#39;,
- &#39;Ac&#39;,
- &#39;Acra_&#39;,
- &#39;Acroasis_&#39;,
- &#39;Additional&#39;,
- &#39;Administration&#39;,
- &#39;Admiral&#39;,
- &#39;Admon&#39;,
- &#39;Adon_&#39;,
- &#39;Advertisement&#39;,
- &#39;Affection&#39;,
- &#39;Africa&#39;,
- &#39;Africam&#39;,
- &#39;After&#39;,
- &#39;Agatharc&#39;,
- &#39;Age&#39;,
- &#39;Ages&#39;,
- &#39;Agriculture&#39;,
- &#39;Al&#39;,
- &#39;Alcib&#39;,
- &#39;Alexander&#39;,
- &#39;Alexandrinus_&#39;,
- &#39;All&#39;,
- &#39;Altar&#39;,
- &#39;Altar._&#39;,
- &#39;Altars&#39;,
- &#39;Altitudes&#39;,
- &#39;Amazons_&#39;,
- &#39;Ambassador&#39;,
- &#39;Amended&#39;,
- &#39;Ammian&#39;,
- &#39;Ammon._&#39;,
- &#39;Ammon_&#39;,
- &#39;Among&#39;,
- &#39;Amos&#39;,
- &#39;Anaphe&#39;,
- &#39;Ancient&#39;,
- &#39;Ancients&#39;,
- &#39;And&#39;,
- &#39;Angel&#39;,
- &#39;Angle&#39;,
- &#39;Angles&#39;,
- &#39;Annal&#39;,
- &#39;Annals&#39;,
- &#39;Another&#39;,
- &#39;Ant&#39;,
- &#39;Antient&#39;,
- &#39;Antients&#39;,
- &#39;Antiq&#39;,
- &#39;Antiq._&#39;,
- &#39;Antiquities&#39;,
- &#39;Antiquity&#39;,
- &#39;Antistitem_&#39;,
- &#39;Any&#39;,
- &#39;Ap&#39;,
- &#39;Apion&#39;,
- &#39;Apollod&#39;,
- &#39;Apollodor&#39;,
- &#39;Apollon&#39;,
- &#39;Apollonii&#39;,
- &#39;Apologet&#39;,
- &#39;Apostles&#39;,
- &#39;Apparitionem&#39;,
- &#39;Appion&#39;,
- &#39;Apud&#39;,
- &#39;Aquarius&#39;,
- &#39;Arabumque&#39;,
- &#39;Archer&#39;,
- &#39;Architecture&#39;,
- &#39;Archive&#39;,
- &#39;Archives&#39;,
- ...]
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Lexical-Richness-of-Text">
-<h1>Lexical Richness of Text<a class="headerlink" href="#Lexical-Richness-of-Text" title="Permalink to this headline">¶</a></h1>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [45]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">text</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[45]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>0.0981149046209197
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [48]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Kings&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[48]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>265
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [49]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="mi">100</span><span class="o">*</span><span class="n">text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Kings&quot;</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[49]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>0.24828542517707905
+<span></span>[&#39;the&#39;,
+ &#39;project&#39;,
+ &#39;gutenberg&#39;,
+ &#39;ebook&#39;,
+ &#39;of&#39;,
+ &#39;the&#39;,
+ &#39;chronology&#39;,
+ &#39;of&#39;,
+ &#39;ancient&#39;,
+ &#39;kingdoms&#39;]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="Stopwords">
-<h1>Stopwords<a class="headerlink" href="#Stopwords" title="Permalink to this headline">¶</a></h1>
+<h2>Stopwords<a class="headerlink" href="#Stopwords" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [69]:
+<span></span>In [34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1991,7 +925,7 @@ now_of only_of the_and
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [70]:
+<span></span>In [35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -2001,7 +935,7 @@ now_of only_of the_and
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[70]:
+<span></span>Out[35]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -2019,6 +953,7 @@ now_of only_of the_and
  &#39;any&#39;,
  &#39;are&#39;,
  &#39;aren&#39;,
+ &quot;aren&#39;t&quot;,
  &#39;as&#39;,
  &#39;at&#39;,
  &#39;be&#39;,
@@ -2033,14 +968,18 @@ now_of only_of the_and
  &#39;by&#39;,
  &#39;can&#39;,
  &#39;couldn&#39;,
+ &quot;couldn&#39;t&quot;,
  &#39;d&#39;,
  &#39;did&#39;,
  &#39;didn&#39;,
+ &quot;didn&#39;t&quot;,
  &#39;do&#39;,
  &#39;does&#39;,
  &#39;doesn&#39;,
+ &quot;doesn&#39;t&quot;,
  &#39;doing&#39;,
  &#39;don&#39;,
+ &quot;don&#39;t&quot;,
  &#39;down&#39;,
  &#39;during&#39;,
  &#39;each&#39;,
@@ -2050,10 +989,13 @@ now_of only_of the_and
  &#39;further&#39;,
  &#39;had&#39;,
  &#39;hadn&#39;,
+ &quot;hadn&#39;t&quot;,
  &#39;has&#39;,
  &#39;hasn&#39;,
+ &quot;hasn&#39;t&quot;,
  &#39;have&#39;,
  &#39;haven&#39;,
+ &quot;haven&#39;t&quot;,
  &#39;having&#39;,
  &#39;he&#39;,
  &#39;her&#39;,
@@ -2070,7 +1012,9 @@ now_of only_of the_and
  &#39;into&#39;,
  &#39;is&#39;,
  &#39;isn&#39;,
+ &quot;isn&#39;t&quot;,
  &#39;it&#39;,
+ &quot;it&#39;s&quot;,
  &#39;its&#39;,
  &#39;itself&#39;,
  &#39;just&#39;,
@@ -2079,12 +1023,15 @@ now_of only_of the_and
  &#39;ma&#39;,
  &#39;me&#39;,
  &#39;mightn&#39;,
+ &quot;mightn&#39;t&quot;,
  &#39;more&#39;,
  &#39;most&#39;,
  &#39;mustn&#39;,
+ &quot;mustn&#39;t&quot;,
  &#39;my&#39;,
  &#39;myself&#39;,
  &#39;needn&#39;,
+ &quot;needn&#39;t&quot;,
  &#39;no&#39;,
  &#39;nor&#39;,
  &#39;not&#39;,
@@ -2107,15 +1054,20 @@ now_of only_of the_and
  &#39;s&#39;,
  &#39;same&#39;,
  &#39;shan&#39;,
+ &quot;shan&#39;t&quot;,
  &#39;she&#39;,
+ &quot;she&#39;s&quot;,
  &#39;should&#39;,
+ &quot;should&#39;ve&quot;,
  &#39;shouldn&#39;,
+ &quot;shouldn&#39;t&quot;,
  &#39;so&#39;,
  &#39;some&#39;,
  &#39;such&#39;,
  &#39;t&#39;,
  &#39;than&#39;,
  &#39;that&#39;,
+ &quot;that&#39;ll&quot;,
  &#39;the&#39;,
  &#39;their&#39;,
  &#39;theirs&#39;,
@@ -2137,9 +1089,11 @@ now_of only_of the_and
  &#39;very&#39;,
  &#39;was&#39;,
  &#39;wasn&#39;,
+ &quot;wasn&#39;t&quot;,
  &#39;we&#39;,
  &#39;were&#39;,
  &#39;weren&#39;,
+ &quot;weren&#39;t&quot;,
  &#39;what&#39;,
  &#39;when&#39;,
  &#39;where&#39;,
@@ -2151,9 +1105,15 @@ now_of only_of the_and
  &#39;will&#39;,
  &#39;with&#39;,
  &#39;won&#39;,
+ &quot;won&#39;t&quot;,
  &#39;wouldn&#39;,
+ &quot;wouldn&#39;t&quot;,
  &#39;y&#39;,
  &#39;you&#39;,
+ &quot;you&#39;d&quot;,
+ &quot;you&#39;ll&quot;,
+ &quot;you&#39;re&quot;,
+ &quot;you&#39;ve&quot;,
  &#39;your&#39;,
  &#39;yours&#39;,
  &#39;yourself&#39;,
@@ -2163,7 +1123,7 @@ now_of only_of the_and
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [71]:
+<span></span>In [36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -2173,17 +1133,17 @@ now_of only_of the_and
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [76]:
+<span></span>In [37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">filter_text</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">text</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">stop_words</span> <span class="p">]</span>
+<span></span><span class="n">filter_text</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">stop_words</span> <span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [77]:
+<span></span>In [38]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -2193,35 +1153,254 @@ now_of only_of the_and
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[77]:
+<span></span>Out[38]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;The&#39;,
- &#39;Project&#39;,
- &#39;Gutenberg&#39;,
- &#39;EBook&#39;,
- &#39;The&#39;,
- &#39;Chronology&#39;,
- &#39;Ancient&#39;,
- &#39;Kingdoms&#39;,
- &#39;Amended&#39;,
- &#39;Isaac&#39;]
+<span></span>[&#39;project&#39;,
+ &#39;gutenberg&#39;,
+ &#39;ebook&#39;,
+ &#39;chronology&#39;,
+ &#39;ancient&#39;,
+ &#39;kingdoms&#39;,
+ &#39;amended&#39;,
+ &#39;isaac&#39;,
+ &#39;newton&#39;,
+ &#39;ebook&#39;]
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="Lists-Reminders">
-<h1>Lists Reminders<a class="headerlink" href="#Lists-Reminders" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Analyzing-the-Text-with-NLTK">
+<h2>Analyzing the Text with NLTK<a class="headerlink" href="#Analyzing-the-Text-with-NLTK" title="Permalink to this headline">¶</a></h2>
+<p>The Natural Language Toolkit is a popular Python library for text
+analysis. We will use it to split the text into individual
+words(tokens), and create a plot of the frequency distribution of the
+tokens.</p>
 <div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">nltk</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">text</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="n">filter_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">text</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[41]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;project&#39;,
+ &#39;gutenberg&#39;,
+ &#39;ebook&#39;,
+ &#39;chronology&#39;,
+ &#39;ancient&#39;,
+ &#39;kingdoms&#39;,
+ &#39;amended&#39;,
+ &#39;isaac&#39;,
+ &#39;newton&#39;,
+ &#39;ebook&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">fdist</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">FreqDist</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">type</span><span class="p">(</span><span class="n">fdist</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[43]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>nltk.probability.FreqDist
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">fdist</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[44]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[(&#39;years&#39;, 568),
+ (&#39;_&#39;, 434),
+ (&#39;year&#39;, 387),
+ (&#39;_egypt_&#39;, 381),
+ (&#39;king&#39;, 379),
+ (&#39;son&#39;, 323),
+ (&#39;l&#39;, 316),
+ (&#39;reign&#39;, 292),
+ (&#39;first&#39;, 268),
+ (&#39;kings&#39;, 266)]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">fdist</span><span class="p">[</span><span class="s1">&#39;blood&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[45]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>5
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">fdist</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/08_scraping_and_nltk_53_0.png" src="_images/08_scraping_and_nltk_53_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [47]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">fdist</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">cumulative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/08_scraping_and_nltk_54_0.png" src="_images/08_scraping_and_nltk_54_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Part-of-Speech-Tagging">
+<h2>Part of Speech Tagging<a class="headerlink" href="#Part-of-Speech-Tagging" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">tagged</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">pos_tag</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">tagged</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[49]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[(&#39;project&#39;, &#39;NN&#39;),
+ (&#39;gutenberg&#39;, &#39;NN&#39;),
+ (&#39;ebook&#39;, &#39;NN&#39;),
+ (&#39;chronology&#39;, &#39;NN&#39;),
+ (&#39;ancient&#39;, &#39;NN&#39;),
+ (&#39;kingdoms&#39;, &#39;NNS&#39;),
+ (&#39;amended&#39;, &#39;VBD&#39;),
+ (&#39;isaac&#39;, &#39;JJ&#39;),
+ (&#39;newton&#39;, &#39;NN&#39;),
+ (&#39;ebook&#39;, &#39;NN&#39;)]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [50]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sent</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Call&#39;</span><span class="p">,</span> <span class="s1">&#39;me&#39;</span><span class="p">,</span> <span class="s1">&#39;Ishmael&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">]</span>
+<span></span><span class="n">text</span><span class="o">.</span><span class="n">similar</span><span class="p">(</span><span class="s2">&quot;king&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+reign son kings brother last one therefore year father according
+called great years began war within man grandfather nabonass conquest
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -2229,19 +1408,17 @@ now_of only_of the_and
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sent</span>
+<span></span><span class="n">text</span><span class="o">.</span><span class="n">common_contexts</span><span class="p">([</span><span class="s2">&quot;king&quot;</span><span class="p">,</span> <span class="s2">&quot;brother&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[51]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;Call&#39;, &#39;me&#39;, &#39;Ishmael&#39;, &#39;.&#39;]
-</pre></div>
-</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+days_king son_father year_king kingdom_upon
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -2249,27 +1426,37 @@ now_of only_of the_and
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span></span><span class="n">text</span><span class="o">.</span><span class="n">dispersion_plot</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="mi">500</span><span class="p">:</span><span class="mi">510</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[52]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&#39;Call&#39;
-</pre></div>
+<div class="output_area docutils container">
+<img alt="_images/08_scraping_and_nltk_60_0.png" src="_images/08_scraping_and_nltk_60_0.png" />
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+</div>
+<div class="section" id="Lexical-Richness-of-Text">
+<h2>Lexical Richness of Text<a class="headerlink" href="#Lexical-Richness-of-Text" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [53]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;stever&#39;</span><span class="p">)</span>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[53]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>49368
 </pre></div>
 </div>
 </div>
@@ -2279,7 +1466,7 @@ now_of only_of the_and
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sent</span>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">text</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2289,7 +1476,7 @@ now_of only_of the_and
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;Call&#39;, &#39;me&#39;, &#39;Ishmael&#39;, &#39;.&#39;, &#39;stever&#39;]
+<span></span>0.1888267703775725
 </pre></div>
 </div>
 </div>
@@ -2299,7 +1486,7 @@ now_of only_of the_and
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sent</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;stever&#39;</span><span class="p">)</span>
+<span></span><span class="n">text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;kings&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2309,31 +1496,40 @@ now_of only_of the_and
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>4
+<span></span>266
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="set-and-tokenizing">
-<h1><code class="docutils literal"><span class="pre">set</span></code> and tokenizing<a class="headerlink" href="#set-and-tokenizing" title="Permalink to this headline">¶</a></h1>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [56]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">saying</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;After&#39;</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;said&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;done&#39;</span><span class="p">,</span> <span class="s1">&#39;more&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;said&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;than&#39;</span><span class="p">,</span> <span class="s1">&#39;done&#39;</span><span class="p">]</span>
+<span></span><span class="mi">100</span><span class="o">*</span><span class="n">text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;kings&quot;</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[56]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>0.5388105655485335
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Long-Words,-Bigrams,-Collacations">
+<h2>Long Words, Bigrams, Collacations<a class="headerlink" href="#Long-Words,-Bigrams,-Collacations" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [57]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">tokens</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">saying</span><span class="p">)</span>
+<span></span><span class="n">long_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -2343,7 +1539,7 @@ now_of only_of the_and
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">tokens</span>
+<span></span><span class="n">long_words</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -2353,219 +1549,22 @@ now_of only_of the_and
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>{&#39;After&#39;, &#39;all&#39;, &#39;and&#39;, &#39;done&#39;, &#39;is&#39;, &#39;more&#39;, &#39;said&#39;, &#39;than&#39;}
+<span></span>[&#39;restrictions&#39;,
+ &#39;distributed&#39;,
+ &#39;proofreading&#39;,
+ &#39;_alexander_&#39;,
+ &#39;encouragement&#39;,
+ &#39;extraordinary&#39;,
+ &#39;productions&#39;,
+ &#39;_chronology_&#39;,
+ &#39;demonstration&#39;,
+ &#39;judiciousness&#39;]
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [59]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">tokens</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [61]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">tokens</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[61]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;said&#39;, &#39;than&#39;]
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [62]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">long_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">text</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">15</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [63]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">long_words</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[63]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;www.gutenberg.net&#39;,
- &#39;_Tiglathpilaser_&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Tiglathpilasser_&#39;,
- &#39;_Tiglathpilasser_&#39;,
- &#39;_Tiglathpilasser_&#39;,
- &#39;_Asserhadon-Pul_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;Halicarnassensis_&#39;,
- &#39;Halicarnassensis_&#39;,
- &#39;illuminationibus&#39;,
- &#39;illuminationibus&#39;,
- &#39;illuminationibus&#39;,
- &#39;Halicarnassensis_&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;fire-worshippers&#39;,
- &#39;_Mediterranean__&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Tiglath-pileser_&#39;,
- &#39;_Mediterranean__&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Tiglath-pileser_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Misphragmuthosis_&#39;,
- &#39;_Tiglath-Pul-Assur_&#39;,
- &#39;_Assur-Hadon-Pul_&#39;,
- &#39;_Nebo-Adon-Assur_&#39;,
- &#39;_Nebo-Pul-Assur_&#39;,
- &#39;_Nebo-Chaddon-Assur_&#39;,
- &#39;_Nebo-Assur-Adon_&#39;,
- &#39;_Nergal-Shar-Assur_&#39;,
- &#39;_Labo-Assur-dach_&#39;,
- &#39;_Merodach-Empad_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Tiglath-pilesar_&#39;,
- &#39;_Tiglath-pileser_&#39;,
- &#39;_Tiglath-pileser_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Tiglath-pileser_&#39;,
- &#39;Ναβουχοδονοσορον&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Tiglath-pileser_&#39;,
- &#39;_Tiglath-pileser_&#39;,
- &#39;_Tiglath-pileser_&#39;,
- &#39;_Asserhadon-Pul_&#39;,
- &#39;_Nabuchodonosor_&#39;,
- &#39;__Nabuchodonosor_&#39;,
- &#39;_Nabuchodonosor_&#39;,
- &#39;_Nabuchodonosor_&#39;,
- &#39;_Nabuchodonosor_&#39;,
- &#39;_Nabuchodonosor_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Asserhadon-Pul_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;Under-Treasurers&#39;,
- &#39;treasure-chambers&#39;,
- &#39;treasure-chambers&#39;,
- &#39;treasure-chambers&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;treasure-chambers&#39;,
- &#39;Treasure-Chambers&#39;,
- &#39;incorruptissimum&#39;,
- &#39;prognostications&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Ecclesiasticus_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;fire-worshippers&#39;,
- &#39;_Nebuchadnezzar_&#39;,
- &#39;Lieutenant-General&#39;,
- &#39;//www.gutenberg.org/1/5/7/8/15784/&#39;,
- &#39;//gutenberg.net/license&#39;,
- &#39;trademark/copyright&#39;,
- &#39;www.gutenberg.net&#39;,
- &#39;www.gutenberg.net&#39;,
- &#39;unenforceability&#39;,
- &#39;//pglaf.org/fundraising&#39;,
- &#39;//pglaf.org/donate&#39;,
- &#39;//www.gutenberg.net&#39;]
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [66]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -2575,7 +1574,7 @@ now_of only_of the_and
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[66]:
+<span></span>Out[59]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -2585,7 +1584,7 @@ now_of only_of the_and
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [67]:
+<span></span>In [60]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -2598,61 +1597,205 @@ now_of only_of the_and
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Project Gutenberg-tm; _Red Sea_; _Anno Nabonass._; hundred years;
-Project Gutenberg; years a-piece; _Argonautic_ expedition; _Trojan_
-war; _Darius Hystaspis_; _Argonautic_ Expedition; _Assyrian_ Empire;
-Literary Archive; _Darius Nothus_; Gutenberg-tm electronic; lower
-_Egypt_; Archive Foundation; electronic works; Gutenberg Literary;
-_Peloponnesian_ war; _Jupiter Ammon_
+project gutenberg; _argonautic_ expedition; _red sea_; _anno nabonass;
+_trojan_ war; year _nabonassar_; return _heraclides_; death _solomon_;
+years piece; hundred years; one another; _darius hystaspis_; years
+death; _heraclides_ _peloponnesus_; _alexander_ great; _assyrian_
+empire; literary archive; high priest; _darius nothus_; _asia minor_
 </pre></div></div>
 </div>
-<div class="nbinput docutils container">
+</div>
+<div class="section" id="WordClouds">
+<h2>WordClouds<a class="headerlink" href="#WordClouds" title="Permalink to this headline">¶</a></h2>
+<p>Another way to visualize text is using a wordcloud. I’ll create a
+visualization using our earlier dataframe with guest stars on 21 Jump
+Street. We will visualize the titles with a wordcloud.</p>
+<p>You may need to install wordcloud using</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">wordcloud</span>
+</pre></div>
+</div>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [68]:
+<span></span>In [61]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">nltk</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">gutenberg</span><span class="o">.</span><span class="n">fileids</span><span class="p">()</span>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">wordcloud</span> <span class="k">import</span> <span class="n">WordCloud</span><span class="p">,</span> <span class="n">STOPWORDS</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [62]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/jumpstreet.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [63]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[68]:
+<span></span>Out[63]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>Actors</th>
+      <th>Character</th>
+      <th>Season</th>
+      <th>Episode</th>
+      <th>Title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Barney Martin</td>
+      <td>Charlie</td>
+      <td>1</td>
+      <td>1</td>
+      <td>"Pilot"</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>Brandon Douglas</td>
+      <td>Kenny Weckerle</td>
+      <td>1</td>
+      <td>1 &amp; 2</td>
+      <td>"Pilot"</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>Reginald T. Dorsey</td>
+      <td>Tyrell "Waxer" Thompson</td>
+      <td>1</td>
+      <td>1 &amp; 2</td>
+      <td>"Pilot"</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>Billy Jayne</td>
+      <td>Mark Dorian</td>
+      <td>1</td>
+      <td>2</td>
+      <td>"America, What a Town"</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>Steve Antin</td>
+      <td>Stevie Delano</td>
+      <td>1</td>
+      <td>2</td>
+      <td>"America, What a Town"</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [64]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">wordcloud</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span><span class="n">background_color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [65]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">wordcloud</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;wordcloud.wordcloud.WordCloud object at 0x1a269cb4a8&gt;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [66]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wordcloud</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[66]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;austen-emma.txt&#39;,
- &#39;austen-persuasion.txt&#39;,
- &#39;austen-sense.txt&#39;,
- &#39;bible-kjv.txt&#39;,
- &#39;blake-poems.txt&#39;,
- &#39;bryant-stories.txt&#39;,
- &#39;burgess-busterbrown.txt&#39;,
- &#39;carroll-alice.txt&#39;,
- &#39;chesterton-ball.txt&#39;,
- &#39;chesterton-brown.txt&#39;,
- &#39;chesterton-thursday.txt&#39;,
- &#39;edgeworth-parents.txt&#39;,
- &#39;melville-moby_dick.txt&#39;,
- &#39;milton-paradise.txt&#39;,
- &#39;shakespeare-caesar.txt&#39;,
- &#39;shakespeare-hamlet.txt&#39;,
- &#39;shakespeare-macbeth.txt&#39;,
- &#39;whitman-leaves.txt&#39;]
+<span></span>(-0.5, 399.5, 199.5, -0.5)
 </pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/08_scraping_and_nltk_77_1.png" src="_images/08_scraping_and_nltk_77_1.png" />
 </div>
 </div>
 </div>
 <div class="section" id="Task">
-<h1>Task<a class="headerlink" href="#Task" title="Permalink to this headline">¶</a></h1>
+<h2>Task<a class="headerlink" href="#Task" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li>Scrape and tokenize a text from project Gutenberg.</li>
 <li>Compare the most frequent occurring words with and without stopwords
 removed.</li>
-<li>Compare the top bigrams and trigrams for a second book.</li>
+<li>Examine the top bigrams. Create a barplot of the top 10 bigrams.</li>
+<li>Create a wordcloud for the text.</li>
 </ol>
 <p><strong>Further Reading</strong>: <a class="reference external" href="http://www.nltk.org/book/">http://www.nltk.org/book/</a></p>
+</div>
 </div>
 
 
@@ -2699,7 +1842,7 @@ removed.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'d77bfc7',
+            VERSION:'0d4042f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
