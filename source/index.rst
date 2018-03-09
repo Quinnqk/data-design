@@ -8,7 +8,7 @@ Welcome to Data and Design's documentation!
 
 .. toctree::
 	:glob:
-	:caption: Section I
+	:caption: Course Materials
 
 	00-overview
 	01-syllabus
@@ -16,8 +16,11 @@ Welcome to Data and Design's documentation!
     03-datafiles
     04-ProjectA
     05-intro_to_scraping_I
-    06_scraping_II
     07-scraping-jumpstreet
     08_scraping_and_nltk
+    09-Machine-Learning-Intro
     09_ML_Intro
     010-Decision-Trees
+    11-django-intro
+    12-Django-templates
+    13-Django-Models-Blogs
