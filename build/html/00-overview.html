@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data and Design with Python &mdash; Data and Design version 4269344</title>
+  <title>Data and Design with Python &mdash; Data and Design version 72ac2f3</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Data and Design version 4269344" href="index.html"/> 
+    <link rel="top" title="Data and Design version 72ac2f3" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -90,8 +90,12 @@
 <li class="toctree-l1"><a class="reference internal" href="05-intro_to_scraping_I.html">Introduction to Web Scraping</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07-scraping-jumpstreet.html">Scraping the Street</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08_scraping_and_nltk.html">Webscraping and Natural Language Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-Machine-Learning-Intro.html">Introduction to Machine Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09_ML_Intro.html">Intro to Machine Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="010-Decision-Trees.html">Decision Tree Classifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-django-intro.html">Django Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-Django-templates.html">Templates and Bootstrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-Django-Models-Blogs.html">Django Models: Building a Blog</a></li>
 </ul>
 
             
@@ -221,38 +225,35 @@ grade mathematics scores.</li>
 <li><a class="reference internal" href="02-introPandas.html"><span class="doc">Introduction to Pandas and Seaborn</span></a></li>
 <li><a class="reference internal" href="03-datafiles.html"><span class="doc">Pandas and Seaborn</span></a></li>
 <li><a class="reference internal" href="04-ProjectA.html"><span class="doc">Assignment: Access and Analyze Data</span></a></li>
-<li><strong>Introduction to Web Scraping and NLP</strong>: Today, we investigate the
-use of webscraping to pull and clean data from websites. In addition
-to quantitative data, we begin to explore how to analyze textual data
-using the NLTK library. Our second project involves scraping and
-analyzing the language used by two different news organizations
-reporting on the same topic.</li>
-<li>Introduction to webscraping</li>
-<li>Scraping Text and NLTK</li>
-<li>Assignment: Who’s News?</li>
-<li><strong>Web Crawling and Machine Learning</strong>: This session will advance our
-web scraping with the use of <code class="docutils literal"><span class="pre">scrapy</span></code> to crawl multiple webpages.
-From here, we will investigate contemporary data analysis paradigms
-through machine learning with NLP. Our project involves crawling
-sites of interest and deploying ML approaches in language processing.</li>
-<li>Webcrawling with Scrapy</li>
-<li>Machine Learning on Text</li>
-<li>Assignment: Crawling Twitter</li>
+<li><strong>Introduction to Web Scraping</strong>: Today, we investigate the use of
+webscraping to pull and clean data from websites. We will investigate
+some basics of HTML and CSS, and use the <code class="docutils literal"><span class="pre">requests</span></code> and
+<code class="docutils literal"><span class="pre">BeautifulSoup2</span></code> libraries to pull this information.</li>
+<li><a class="reference internal" href="05-intro_to_scraping_I.html"><span class="doc">Introduction to webscraping</span></a></li>
+<li><a class="reference internal" href="07-scraping-jumpstreet.html"><span class="doc">Scraping Part II</span></a></li>
+<li><strong>Natural Language Processing and Scraping</strong>: Today, we extend our
+webscraping work to analyze the text of documents scraped. We will
+use the Natural Language Toolkit to analyze text. We will also
+introduce the use of regular expressions in navigating text on the
+computer.</li>
+<li><a class="reference internal" href="08_scraping_and_nltk.html"><span class="doc">Webscraping and Natural Language
+Processing</span></a></li>
+<li><a class="reference internal" href="09-Machine-Learning-Intro.html"><span class="doc">Sentiment Analysis of Text</span></a></li>
+<li><a class="reference internal" href="09_ML_Intro.html"><span class="doc">More Machine Learning</span></a></li>
 <li><strong>Web Design with Django</strong>: In this workshop, we will use the Django
 framework to design and deploy a basic web application. Our
-assignment involves customizing and extending our base blog
-framework.</li>
-<li>Basic WebSite with Django</li>
-<li>Applications with Django</li>
-<li>Assignment: Blog with Django</li>
-<li><strong>Bots and Python</strong>: This workshop will focus on the use of Python to
-build and deploy a simple bot. Famous from the recent election cycle,
-we focus on how to automate communication with individuals on the
-web. Our assignment involves the development and deployment of our
-own bot.</li>
-<li>Bot Basics</li>
-<li>Deploying a Bot</li>
-<li>Assignment: Make your Bot</li>
+assignment will be a basic website ready to display our earlier work
+with Jupyter notebooks. We discuss Django projects and applications
+to use Python to build a basic website.</li>
+<li><a class="reference internal" href="11-django-intro.html"><span class="doc">Basic WebSite with Django</span></a></li>
+<li><a class="reference internal" href="12-Django-templates.html"><span class="doc">Applications with Django</span></a></li>
+<li><strong>Data and our Website</strong>: The final class serves to connect our
+earlier work with data and Python through Django models, where we
+build a database for our website. We will add a Blog application to
+our site, post some information, and access these posts as data in
+the shell. Finally, we use the ListView and DetailView to display
+these posts together with template logic.</li>
+<li><a class="reference internal" href="13-Django-Models-Blogs.html"><span class="doc">Databases and Django: A Basic Blog</span></a></li>
 </ul>
 </div>
 </div>
@@ -292,7 +293,7 @@ own bot.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'4269344',
+            VERSION:'72ac2f3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
