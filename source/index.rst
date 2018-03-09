@@ -10,9 +10,9 @@ Welcome to Data and Design's documentation!
 	:glob:
 	:caption: Course Materials
 
-	  00-overview
-	  01-syllabus
-	  02-introPandas
+    00-overview
+    01-syllabus
+    02-introPandas
     03-datafiles
     04-ProjectA
     05-intro_to_scraping_I
